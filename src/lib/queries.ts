@@ -1,57 +1,67 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/src/lib/api';
+import { api } from '@/lib/api';
 import type {
   Video,
   Comment,
   CreateVideoRequest,
   EditVideoRequest,
   CreateCommentRequest,
-} from '@/src/types';
-
-// Helper to tolerate either raw JSON or JSON string responses
-const as = <T>(x: unknown) => (typeof x === 'string' ? JSON.parse(x) : x) as T;
+} from '@/types';
 
 // READS
-export const useVideos = (user_id: string) =>
-  useQuery({
+export function useVideos(user_id: string) {
+  return useQuery<Video[]>({
     queryKey: ['videos', user_id],
-    queryFn: async () => as<Video[]>(await api.listVideosByUser(user_id)),
+    queryFn: async () => {
+      const { videos } = await api.listVideosByUser(user_id);
+      return videos;
+    },
     enabled: !!user_id,
   });
+}
 
-export const useVideo = (video_id: string) =>
-  useQuery({
+export function useVideo(video_id: string) {
+  return useQuery<Video>({
     queryKey: ['video', video_id],
-    queryFn: async () => as<Video>(await api.getVideo(video_id)),
+    queryFn: async () => {
+      const { video } = await api.getVideo(video_id);
+      return video;
+    },
     enabled: !!video_id,
   });
+}
 
-export const useComments = (video_id: string) =>
-  useQuery({
+export function useComments(video_id: string) {
+  return useQuery<Comment[]>({
     queryKey: ['comments', video_id],
-    queryFn: async () => as<Comment[]>(await api.listComments(video_id)),
+    queryFn: async () => {
+      const { comments } = await api.listComments(video_id);
+      return comments;
+    },
     enabled: !!video_id,
   });
+}
 
 // WRITES
-export const useCreateVideo = () => {
+export function useCreateVideo(user_id: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (body: CreateVideoRequest) => api.createVideo(body), // returns new id (string)
-    onSuccess: (_id, vars) => {
-      qc.invalidateQueries({ queryKey: ['videos', vars.user_id] });
+    mutationFn: (body: CreateVideoRequest) => api.createVideo(body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['videos', user_id] });
     },
   });
-};
+}
 
-export const useEditVideo = () =>
-  useMutation({
+export function useEditVideo() {
+  return useMutation({
     mutationFn: (body: EditVideoRequest) => api.editVideo(body),
   });
+}
 
-export const useCreateComment = (video_id: string) => {
+export function useCreateComment(video_id: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: Omit<CreateCommentRequest, 'video_id'>) =>
@@ -60,4 +70,4 @@ export const useCreateComment = (video_id: string) => {
       qc.invalidateQueries({ queryKey: ['comments', video_id] });
     },
   });
-};
+}

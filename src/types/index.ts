@@ -1,3 +1,22 @@
+// Models
+export type Video = {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string;
+  video_url: string;
+  created_at?: string;
+};
+
+export type Comment = {
+  id: string;
+  video_id: string;
+  user_id: string;
+  content: string;
+  created_at?: string;
+};
+
+//Requests
 export type CreateVideoRequest = {
   user_id: string;
   title: string;
@@ -17,19 +36,11 @@ export type CreateCommentRequest = {
   user_id: string;
 };
 
-export type Video = {
-  id: string;
-  user_id: string;
-  title: string;
-  description: string;
-  video_url: string;
-  created_at?: string;
-};
+// Responses
+export type ListVideosResponse = { videos: Video[] };
+export type GetVideoResponse = { video: Video };
+export type ListCommentsResponse = { comments: Comment[] };
 
-export type Comment = {
-  id: string;
-  video_id: string;
-  user_id: string;
-  content: string;
-  created_at?: string;
-};
+export type CreateVideoResponse = { success: string }; // server returns success message
+export type CreateCommentResponse = { success: string };
+export type EditVideoResponse = { success: string };

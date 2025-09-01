@@ -117,7 +117,10 @@ export default function VideoCard({ video }: { video: Video }) {
           <div className="col-start-2 row-start-2 self-center flex flex-wrap items-center gap-x-2 text-sm text-gray-500">
             <span>{video.user_id}</span>
             <span>• {dayjs(video.created_at).fromNow()}</span>
-            <span>• {video.num_comments} comments</span>
+            <span>
+              • {video.num_comments}{' '}
+              {video.num_comments === 1 ? 'comment' : 'comments'}
+            </span>
           </div>
         </div>
       </Link>

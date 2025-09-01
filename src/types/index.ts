@@ -5,7 +5,8 @@ export type Video = {
   title: string;
   description: string;
   video_url: string;
-  created_at?: string;
+  created_at: string;
+  num_comments: number;
 };
 
 export type Comment = {
@@ -13,7 +14,7 @@ export type Comment = {
   video_id: string;
   user_id: string;
   content: string;
-  created_at?: string;
+  created_at: string;
 };
 
 //Requests

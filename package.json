@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.5",
+    "dayjs": "^1.11.18",
     "motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",

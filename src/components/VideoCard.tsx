@@ -77,7 +77,7 @@ export default function VideoCard({ video }: { video: Video }) {
     <li>
       <Link
         href={`/videos/${video.id}`}
-        className="group relative flex flex-col gap-3 cursor-pointer"
+        className="group relative h-full flex flex-col gap-3 cursor-pointer"
         onMouseEnter={startHoverPreview}
         onMouseLeave={stopHoverPreview}
         onFocus={startHoverPreview}

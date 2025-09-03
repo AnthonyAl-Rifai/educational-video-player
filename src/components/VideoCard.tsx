@@ -15,7 +15,15 @@ function formatDurationMMSS(totalSeconds: number | null): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
-export default function VideoCard({ video }: { video: Video }) {
+interface VideoCardProps {
+  video: Video;
+  variant?: 'default' | 'sidebar';
+}
+
+export default function VideoCard({
+  video,
+  variant = 'default',
+}: VideoCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [durationSeconds, setDurationSeconds] = useState<number | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
@@ -73,11 +81,62 @@ export default function VideoCard({ video }: { video: Video }) {
     setRemainingSeconds(durationSeconds);
   };
 
+  if (variant === 'sidebar') {
+    return (
+      <li>
+        <Link
+          href={`/videos/${video.id}`}
+          className="group relative flex cursor-pointer gap-3"
+          onMouseEnter={startHoverPreview}
+          onMouseLeave={stopHoverPreview}
+          onFocus={startHoverPreview}
+          onBlur={stopHoverPreview}
+        >
+          {/* Preview - smaller for sidebar */}
+          <div className="relative aspect-video w-36 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
+            <video
+              ref={videoRef}
+              src={video.video_url}
+              muted
+              playsInline
+              preload="metadata"
+              controls={false}
+              className="pointer-events-none h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              aria-label={video.title}
+            />
+            <span className="pointer-events-none absolute right-1 bottom-1 rounded bg-black/80 px-1 py-0.5 text-xs font-semibold text-white">
+              {isPreviewPlaying
+                ? formatDurationMMSS(remainingSeconds)
+                : formatDurationMMSS(durationSeconds)}
+            </span>
+          </div>
+
+          {/* Details - vertical layout */}
+          <div className="min-w-0 flex-1">
+            <h4 className="line-clamp-2 text-sm leading-snug font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
+              {video.title}
+            </h4>
+            <div className="mt-1 flex flex-col gap-1 text-xs text-gray-500">
+              <span>{video.user_id}</span>
+              <div className="flex gap-1">
+                <span>{dayjs(video.created_at).fromNow()}</span>
+                <span>
+                  • {video.num_comments}{' '}
+                  {video.num_comments === 1 ? 'comment' : 'comments'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </li>
+    );
+  }
+
   return (
     <li>
       <Link
         href={`/videos/${video.id}`}
-        className="group relative h-full flex flex-col gap-3 cursor-pointer"
+        className="group relative flex h-full cursor-pointer flex-col gap-3"
         onMouseEnter={startHoverPreview}
         onMouseLeave={stopHoverPreview}
         onFocus={startHoverPreview}
@@ -95,7 +154,7 @@ export default function VideoCard({ video }: { video: Video }) {
             className="pointer-events-none h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             aria-label={video.title}
           />
-          <span className="pointer-events-none absolute right-2 bottom-2 rounded px-1.5 py-0.5 text-xs font-semibold text-white bg-black/80">
+          <span className="pointer-events-none absolute right-2 bottom-2 rounded bg-black/80 px-1.5 py-0.5 text-xs font-semibold text-white">
             {isPreviewPlaying
               ? formatDurationMMSS(remainingSeconds)
               : formatDurationMMSS(durationSeconds)}
@@ -103,18 +162,18 @@ export default function VideoCard({ video }: { video: Video }) {
         </div>
 
         {/* Details */}
-        <div className="grid grid-cols-[auto_1fr] grid-rows-2 items-start gap-x-3 gap-y-0">
+        <div className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-start gap-x-3 gap-y-0">
           {/* Avatar */}
-          <div className="row-span-2 h-12 w-12 rounded-full bg-blue-100 self-center flex items-center justify-center text-blue-700 font-bold">
+          <div className="row-span-2 flex h-12 w-12 items-center justify-center self-start rounded-full bg-blue-100 font-bold text-blue-700">
             {video.user_id.slice(0, 1).toUpperCase()}
           </div>
           {/* Title */}
-          <div className="col-start-2 row-start-1 line-clamp-2 self-center font-semibold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
+          <div className="col-start-2 row-start-1 line-clamp-2 self-center leading-snug font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
             {video.title}
           </div>
 
           {/* Metadata */}
-          <div className="col-start-2 row-start-2 self-center flex flex-wrap items-center gap-x-2 text-sm text-gray-500">
+          <div className="col-start-2 row-start-2 flex flex-wrap items-center gap-x-2 self-center text-sm text-gray-500">
             <span>{video.user_id}</span>
             <span>• {dayjs(video.created_at).fromNow()}</span>
             <span>

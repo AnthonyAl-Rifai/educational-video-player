@@ -2,17 +2,25 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { useScroll, useMotionValueEvent } from 'motion/react';
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from 'motion/react';
+import { useModal } from '@/hooks/useModal';
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false); // sheet mounted?
+  const [contentVisible, setContentVisible] = useState(false); // menu content shown?
+  const { openModal } = useModal();
 
   const { scrollY } = useScroll();
   const lastY = useRef(0);
 
   useMotionValueEvent(scrollY, 'change', (y) => {
-    if (mobileOpen) return setIsVisible(true); // keep header visible when menu is open
+    if (mobileOpen) return setIsVisible(true);
     const prev = lastY.current;
     lastY.current = y;
     if (Math.abs(y - prev) < 2) return;
@@ -20,45 +28,78 @@ export default function Header() {
     setIsVisible(y < prev);
   });
 
-  // Close on Escape + lock/unlock body scroll
+  // open / close
+  const openMenu = () => {
+    setMobileOpen(true);
+    setContentVisible(true);
+  };
+  const startClose = () => {
+    setContentVisible(false);
+  }; // sheet unmounts after content exit
+
+  // Esc to close
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) =>
-      e.key === 'Escape' && setMobileOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && startClose();
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // lock body scroll while sheet mounted
   useEffect(() => {
     const prev = document.body.style.overflow;
     if (mobileOpen) document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = prev || '';
     };
   }, [mobileOpen]);
 
+  // ENTER: slight delay + stagger
+  // EXIT: fast fade (~120ms) + reverse stagger so items disappear almost together
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { delayChildren: 0.2, staggerChildren: 0.05 },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.12,
+        staggerChildren: 0.03,
+        staggerDirection: -1,
+      },
+    },
+  };
+  const item = {
+    hidden: { opacity: 0, y: 8 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 4, transition: { duration: 0.12 } },
+  };
+
   return (
     <>
+      {/* Header bar */}
       <header
-        className={`fixed top-0 inset-x-0 z-50 transition-transform duration-300 will-change-transform border-b
-        ${mobileOpen ? 'bg-white/95 backdrop-blur' : 'bg-white/70 backdrop-blur-md'} border-gray-200/60`}
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-transform duration-300 will-change-transform ${mobileOpen ? 'bg-white/90 backdrop-blur' : 'bg-white/60 backdrop-blur-md'} border-white/40`}
         style={{ transform: isVisible ? 'translateY(0)' : 'translateY(-100%)' }}
       >
         <nav
-          className="max-w-[1504px] mx-auto px-4 sm:px-6 lg:px-8"
+          className="mx-auto max-w-[1504px] px-4 sm:px-6 lg:px-8"
           aria-label="Main navigation"
         >
-          <div className="flex justify-between items-center h-20">
-            {/* Left: Brand + desktop search */}
+          <div className="flex h-20 items-center justify-between">
+            {/* Left: brand + desktop search */}
             <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="flex items-center text-4xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+                className="flex items-center text-4xl font-bold text-gray-900 transition-colors hover:text-blue-600"
                 aria-label="Go to homepage"
               >
                 <span>Edeo</span>
               </Link>
 
-              <div className="relative w-64 hidden md:block">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="relative hidden w-64 md:block">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <svg
                     className="h-5 w-5 text-gray-400"
                     fill="none"
@@ -76,7 +117,7 @@ export default function Header() {
                 <input
                   type="search"
                   placeholder="Search videos..."
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-white/80 backdrop-blur-sm text-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="block w-full rounded-md border bg-white/70 py-2 pr-3 pl-10 text-lg ring-1 ring-white/40 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   aria-label="Search videos"
                 />
               </div>
@@ -84,148 +125,166 @@ export default function Header() {
 
             {/* Desktop nav */}
             <div
-              className="hidden md:flex items-center gap-6"
+              className="hidden items-center gap-6 md:flex"
               aria-label="Primary navigation"
             >
               <Link
                 href="/videos"
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-xl transition-colors"
+                className="px-3 py-2 text-xl text-gray-700 transition-colors hover:text-blue-600"
               >
                 Videos
               </Link>
-              <Link
-                href="/videos/new"
-                className="inline-flex items-center px-4 py-2 text-xl text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              <motion.button
+                type="button"
+                onClick={openModal}
+                className="inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-4 py-2 text-xl text-white focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 17,
+                }}
               >
                 + Create
-              </Link>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                type="button"
-                onClick={() => setMobileOpen((o) => !o)}
-                className="text-gray-700 hover:text-blue-600 p-2 rounded-md transition-colors bg-amber-400"
-                aria-label="Toggle mobile menu"
-                aria-expanded={mobileOpen}
-                aria-controls="mobile-overlay"
-              >
-                                 {mobileOpen ? (
-                   <svg
-                     className="h-8 w-8"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                   >
-                     <path
-                       strokeLinecap="round"
-                       strokeLinejoin="round"
-                       strokeWidth={2}
-                       d="M6 18L18 6M6 6l12 12"
-                     />
-                   </svg>
-                 ) : (
-                   <svg
-                     className="h-8 w-8"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                   >
-                     <path
-                       strokeLinecap="round"
-                       strokeLinejoin="round"
-                       strokeWidth={2}
-                       d="M4 6h16M4 12h16M4 18h16"
-                     />
-                   </svg>
-                 )}
-              </button>
+              </motion.button>
             </div>
           </div>
         </nav>
       </header>
 
-      {/* Full-viewport mobile overlay */}
-      <div
-        id="mobile-overlay"
-        role="dialog"
-        aria-modal="true"
-        className={`fixed inset-0 z-[60] md:hidden transition-opacity duration-200
-          ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-      >
-        {/* backdrop */}
-        <div
-          className="absolute inset-0 bg-white/95 backdrop-blur-md"
-          onClick={() => setMobileOpen(false)}
+      {/* Seed (only when closed) — at the button spot */}
+      {!mobileOpen && (
+        <motion.div
+          layoutId="mobile-sheet"
+          className="pointer-events-none fixed top-4 right-4 z-[70] h-12 w-12 transform-gpu rounded-xl bg-white/50 ring-1 ring-white/40 backdrop-blur-md md:hidden"
         />
+      )}
 
-        {/* content */}
-        <div className="relative h-full max-w-[1504px] mx-auto px-6 pt-24">
-          <button
-            className="absolute right-4 top-4 p-2 rounded-md text-gray-700 hover:text-blue-600"
-            aria-label="Close mobile menu"
-            onClick={() => setMobileOpen(false)}
+      {/* Single fixed icon (topmost) — toggles open/close */}
+      <button
+        type="button"
+        onClick={() => (mobileOpen ? startClose() : openMenu())}
+        className="fixed top-4 right-4 z-[90] rounded-xl p-2 text-gray-900 md:hidden"
+        aria-label={mobileOpen ? 'Close mobile menu' : 'Open mobile menu'}
+        aria-expanded={mobileOpen}
+        aria-controls="mobile-overlay"
+      >
+        {/* same icon for now so it never visually switches */}
+        <svg
+          className="h-8 w-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      {/* Morph target sheet */}
+      <AnimatePresence mode="popLayout">
+        {mobileOpen && (
+          <motion.div
+            layoutId="mobile-sheet"
+            role="dialog"
+            aria-modal="true"
+            id="mobile-overlay"
+            className="fixed inset-0 z-[80] transform-gpu bg-white/40 ring-1 ring-white/40 backdrop-blur-xl md:hidden"
+            initial={{ borderRadius: 16 }}
+            animate={{ borderRadius: 0 }}
+            exit={{ borderRadius: 16 }} // no opacity fade → no flash
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            onClick={() => contentVisible && startClose()} // tap backdrop to start close
           >
-            <svg
-              className="h-7 w-7"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
+            {/* Content staged separately: fades out first, THEN we unmount the sheet */}
+            <AnimatePresence
+              mode="wait"
+              onExitComplete={() => setMobileOpen(false)} // after content fades out, morph back
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
-          <div className="h-full flex flex-col gap-6 overflow-y-auto overscroll-contain pb-12">
-            {/* Mobile search */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {contentVisible && (
+                <motion.div
+                  key="menu-content"
+                  className="mx-auto h-full max-w-[1504px] overflow-y-auto px-6 pt-24 pb-12"
+                  variants={container}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  onClick={(e) => e.stopPropagation()} // don't close when clicking inside
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                placeholder="Search videos..."
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md bg-white text-base focus:outline-none focus:ring-1 focus:ring-blue-500"
-                aria-label="Search videos"
-              />
-            </div>
+                  <motion.div variants={item} className="relative mb-6">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <svg
+                        className="h-5 w-5 text-gray-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="search"
+                      placeholder="Search videos..."
+                      className="block w-full rounded-lg border bg-white/70 py-3 pr-3 pl-10 text-base ring-1 ring-white/40 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    />
+                  </motion.div>
 
-            <Link
-              href="/videos"
-              onClick={() => setMobileOpen(false)}
-              className="block text-gray-800 hover:text-blue-600 text-2xl font-semibold"
-            >
-              Videos
-            </Link>
-
-            <Link
-              href="/videos/new"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex items-center justify-center w-full px-4 py-3 text-lg text-white bg-blue-600 hover:bg-blue-700 rounded-2xl transition-colors"
-            >
-              + Create
-            </Link>
-          </div>
-        </div>
-      </div>
+                  <motion.nav
+                    variants={container}
+                    className="flex flex-col gap-4 text-2xl font-semibold"
+                  >
+                    <motion.div variants={item}>
+                      <Link
+                        href="/videos"
+                        onClick={startClose}
+                        className="text-gray-900 hover:opacity-80"
+                      >
+                        Videos
+                      </Link>
+                    </motion.div>
+                    <motion.div variants={item}>
+                      <motion.button
+                        type="button"
+                        onClick={() => {
+                          openModal();
+                          startClose();
+                        }}
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-3 text-lg text-white"
+                        whileHover={{
+                          scale: 1.02,
+                          backgroundColor: '#1d4ed8',
+                          boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)',
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 17,
+                        }}
+                      >
+                        + Create
+                      </motion.button>
+                    </motion.div>
+                  </motion.nav>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

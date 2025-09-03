@@ -1,17 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useVideos } from '@/lib/queries';
 import { USER_ID } from '@/lib/config';
 import VideoCard from '@/components/VideoCard';
+import { useModal } from '@/hooks/useModal';
 
 type SortOption = 'date' | 'comments';
 
 export default function VideosPage() {
   const { data, isLoading, error } = useVideos(USER_ID);
   const [sortBy, setSortBy] = useState<SortOption>('date');
+  const { openModal } = useModal();
 
   // Memoize the videos array to prevent unnecessary re-renders
   const videos = useMemo(() => data ?? [], [data]);
@@ -41,13 +42,19 @@ export default function VideosPage() {
   if (error) return <p>Failed to load videos</p>;
   if (!videos.length)
     return (
-      <p>
-        No videos yet.{' '}
-        <Link href="/videos/new" className="underline">
-          Create one
-        </Link>
-        .
-      </p>
+      <div>
+        <p>
+          No videos yet.{' '}
+          <button
+            type="button"
+            onClick={openModal}
+            className="underline transition-colors hover:text-blue-600"
+          >
+            Create one
+          </button>
+          .
+        </p>
+      </div>
     );
 
   return (
@@ -57,12 +64,12 @@ export default function VideosPage() {
         <h1 className="text-2xl font-bold text-gray-900">Videos</h1>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Sort by:</span>
-          <div className="flex bg-gray-100 rounded-lg p-1 ring-1 ring-gray-200">
+          <div className="flex rounded-lg bg-gray-100 p-1 ring-1 ring-gray-200">
             <motion.button
               type="button"
               aria-pressed={sortBy === 'date'}
               onClick={() => setSortBy('date')}
-              className={`relative px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
+              className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                 sortBy === 'date'
                   ? 'text-gray-900'
                   : 'text-gray-600 hover:text-gray-900'
@@ -73,7 +80,7 @@ export default function VideosPage() {
               {sortBy === 'date' && (
                 <motion.div
                   layoutId="activeFilter"
-                  className="absolute inset-0 bg-white shadow-sm rounded-md"
+                  className="absolute inset-0 rounded-md bg-white shadow-sm"
                   transition={{
                     type: 'spring',
                     stiffness: 500,
@@ -88,7 +95,7 @@ export default function VideosPage() {
               type="button"
               aria-pressed={sortBy === 'comments'}
               onClick={() => setSortBy('comments')}
-              className={`relative px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
+              className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                 sortBy === 'comments'
                   ? 'text-gray-900'
                   : 'text-gray-600 hover:text-gray-900'
@@ -99,7 +106,7 @@ export default function VideosPage() {
               {sortBy === 'comments' && (
                 <motion.div
                   layoutId="activeFilter"
-                  className="absolute inset-0 bg-white shadow-sm rounded-md"
+                  className="absolute inset-0 rounded-md bg-white shadow-sm"
                   transition={{
                     type: 'spring',
                     stiffness: 500,
@@ -114,7 +121,7 @@ export default function VideosPage() {
       </div>
 
       {/* Video Grid */}
-      <ul className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(350px,1fr))]">
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6">
         {sortedVideos.map((video) => (
           <VideoCard key={video.id} video={video} />
         ))}

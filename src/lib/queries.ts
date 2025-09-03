@@ -56,8 +56,15 @@ export function useCreateVideo(user_id: string) {
 }
 
 export function useEditVideo() {
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: EditVideoRequest) => api.editVideo(body),
+    onSuccess: (_, variables) => {
+      // Invalidate the specific video
+      qc.invalidateQueries({ queryKey: ['video', variables.video_id] });
+      // Invalidate all videos lists to update the video cards
+      qc.invalidateQueries({ queryKey: ['videos'] });
+    },
   });
 }
 

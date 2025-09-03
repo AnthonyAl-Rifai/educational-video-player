@@ -1,54 +1,76 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
+import { motion } from 'motion/react';
+import { useModal } from '@/hooks/useModal';
 
 export default function HeroSection() {
+  const { openModal } = useModal();
+
   return (
-    <section className="flex items-center min-h-[calc(85vh)]">
-      <div className="w-full mb-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] lg:grid-rows-2 gap-8 items-center">
+    <section className="flex min-h-[calc(85vh)] items-center">
+      <div className="mb-10 w-full">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1fr_1.1fr] lg:grid-rows-2">
           {/* First Column, First Row - Main Heading */}
-          <div className="text-left lg:col-start-1 lg:row-start-1 mb-8 lg:mb-0">
-            <h1
-              className="font-bold text-gray-900 tracking-tight
-             text-[clamp(2.25rem,6vw+1rem,6rem)]
-             leading-[1.15] lg:leading-[1.06]"
-            >
+          <div className="mb-8 text-left lg:col-start-1 lg:row-start-1 lg:mb-0">
+            <h1 className="text-[clamp(2.25rem,6vw+1rem,6rem)] leading-[1.15] font-bold tracking-tight text-gray-900 lg:leading-[1.06]">
               Press Play.
-              <span className="text-blue-600 block">Start Learning.</span>
+              <span className="block text-blue-600">Start Learning.</span>
             </h1>
           </div>
 
           {/* First Column, Second Row - Subtext and Buttons */}
-          <div className="text-left lg:col-start-1 lg:row-start-2 mb-8 lg:mb-0">
-            <p className="text-xl sm:text-3xl text-gray-600 mb-8">
+          <div className="mb-8 text-left lg:col-start-1 lg:row-start-2 lg:mb-0">
+            <p className="mb-8 text-xl text-gray-600 sm:text-3xl">
               Discover, create, and share knowledge through engaging video
               content. Join our community of learners and educators.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <motion.a
                 href="/videos"
-                className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 text-lg text-center"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 17,
+                }}
+                className="rounded-lg bg-blue-600 px-8 py-4 text-center text-lg font-semibold text-white"
               >
                 Start Learning
-              </Link>
-              <Link
-                href="/videos/new"
-                className="px-8 py-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-200 text-lg text-center"
+              </motion.a>
+              <motion.button
+                type="button"
+                onClick={openModal}
+                className="cursor-pointer rounded-lg border-2 border-blue-600 px-8 py-4 text-center text-lg font-semibold text-blue-600"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 17,
+                }}
               >
                 Create Video
-              </Link>
+              </motion.button>
             </div>
           </div>
 
           {/* Second Column, Spans Both Rows - Hero Image */}
-          <div className="hidden md:flex lg:col-start-2 lg:row-span-2 items-center justify-center">
-            <div className="w-full h-full flex items-center justify-center">
+          <div className="hidden items-center justify-center md:flex lg:col-start-2 lg:row-span-2">
+            <div className="flex h-full w-full items-center justify-center">
               <Image
                 src="/assets/images/hero-image.svg"
                 alt="Educational Video Learning"
                 width={1000}
                 height={900}
-                className="w-full h-auto max-w-7xl scale-110"
+                className="h-auto w-full max-w-7xl scale-110"
                 priority
               />
             </div>

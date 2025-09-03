@@ -1,6 +1,8 @@
 import './globals.css';
 import Providers from '@/providers';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import VideoCreateModal from '@/components/VideoCreateModal';
 
 export const metadata = {
   title: 'Edeo - Educational Video Platform',
@@ -17,9 +19,11 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <main className="min-h-screen max-w-[1504px] mx-auto px-4 sm:px-6 lg:px-8 mt-26">
+          <main className="mx-auto mt-26 min-h-screen max-w-[1504px] px-4 sm:px-6 lg:px-8">
             {children}
           </main>
+          <Footer />
+          <VideoCreateModal />
         </Providers>
       </body>
     </html>

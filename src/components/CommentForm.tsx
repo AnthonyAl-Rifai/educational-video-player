@@ -24,6 +24,7 @@ export default function CommentForm({
 
   function handleCancel() {
     setContent('');
+    setUserId('demo_student_1');
     setIsInputFocused(false);
   }
 
@@ -38,21 +39,29 @@ export default function CommentForm({
       {/* Avatar */}
       <motion.div
         layout
-        className="row-span-1 h-12 w-12 rounded-full bg-blue-100 self-center flex items-center justify-center text-blue-700 font-bold"
+        className="row-span-1 flex h-12 w-12 items-center justify-center self-center rounded-full bg-blue-100 font-bold text-blue-700"
       >
         <motion.span layout>{userId.slice(0, 1).toUpperCase()}</motion.span>
       </motion.div>
 
       {/* Input */}
       <motion.div layout className="col-start-2 row-start-1">
-        <motion.input
-          layout
-          className="w-full border rounded p-2"
-          placeholder="Add a comment..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onFocus={() => setIsInputFocused(true)}
-        />
+        <motion.div layout className="relative">
+          <motion.input
+            layout
+            className="w-full border-0 border-b border-gray-300 bg-transparent pb-2 focus:outline-none"
+            placeholder="Add a comment..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+          />
+          <motion.div
+            className="absolute bottom-0 left-0 h-0.5 bg-blue-500"
+            initial={{ width: 0 }}
+            animate={{ width: isInputFocused ? '100%' : '0%' }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          />
+        </motion.div>
       </motion.div>
 
       {/* Action buttons - only show when input is focused */}
@@ -61,27 +70,41 @@ export default function CommentForm({
           layout
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="col-start-2 row-start-2 justify-end flex items-center gap-2"
+          className="col-start-2 row-start-2 flex items-center justify-end gap-2"
         >
           <motion.input
-            className="border rounded p-2 text-sm"
+            className="rounded border p-2 text-sm"
             value={userId}
             onChange={(e) => setUserId(e.target.value)}
             placeholder="User ID"
           />
           <motion.button
-            layout
             type="button"
             onClick={handleCancel}
-            className="rounded bg-gray-200 text-gray-700 px-3 py-2 text-sm hover:bg-gray-300"
+            className="cursor-pointer rounded bg-gray-200 px-3 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             Cancel
           </motion.button>
           <motion.button
-            layout
             type="submit"
-            className="rounded bg-black text-white px-3 py-2 text-sm disabled:opacity-50"
-            disabled={pending || !content.trim()}
+            className={`cursor-pointer rounded bg-blue-600 px-3 py-2 text-sm text-white transition-colors duration-200 disabled:cursor-auto disabled:opacity-50 ${
+              !pending && content.trim() && userId.trim()
+                ? 'hover:bg-blue-700'
+                : ''
+            }`}
+            disabled={pending || !content.trim() || !userId.trim()}
+            whileHover={
+              pending || !content.trim() || !userId.trim()
+                ? {}
+                : { scale: 1.02 }
+            }
+            whileTap={
+              pending || !content.trim() || !userId.trim()
+                ? {}
+                : { scale: 0.98 }
+            }
           >
             {pending ? 'Posting…' : 'Comment'}
           </motion.button>

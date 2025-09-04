@@ -25,7 +25,7 @@ export default function VideoPlayer({ src }: { src: string }) {
     console.log('PlaybackState changed to:', playbackState);
   }, [playbackState]);
 
-  const togglePlay = useCallback(async () => {
+  const handleTogglePlay = useCallback(async () => {
     const v = videoRef.current;
     if (!v) return;
     if (v.paused) {
@@ -42,7 +42,7 @@ export default function VideoPlayer({ src }: { src: string }) {
   return (
     <div
       ref={containerRef}
-      className="relative aspect-video w-full overflow-hidden rounded"
+      className="relative aspect-video w-full overflow-hidden rounded-lg"
     >
       <video
         ref={videoRef}
@@ -53,7 +53,7 @@ export default function VideoPlayer({ src }: { src: string }) {
       />
       <PlayerOverlay
         state={playbackState}
-        onTogglePlay={togglePlay}
+        onTogglePlay={handleTogglePlay}
         videoRef={videoRef}
         containerRef={containerRef}
       />

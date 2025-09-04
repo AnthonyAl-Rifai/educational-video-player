@@ -64,7 +64,7 @@ export default function ExpandableText({
           onClick={toggle}
           className="mt-2 cursor-pointer text-sm text-blue-600 transition-colors hover:text-blue-700"
         >
-          {isExpanded ? '...less' : '...more'}
+          {isExpanded ? '...hide' : '...show'}
         </button>
       )}
     </div>

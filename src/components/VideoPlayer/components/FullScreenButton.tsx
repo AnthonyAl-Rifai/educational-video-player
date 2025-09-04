@@ -1,6 +1,8 @@
 'use client';
 
 import { RefObject, useCallback, useState, useEffect } from 'react';
+import FullscreenIcon from '@/components/icons/FullscreenIcon';
+import FullscreenExitIcon from '@/components/icons/FullscreenExitIcon';
 
 function getContainerEl(ref?: RefObject<HTMLDivElement | null>) {
   return ref?.current ?? null;
@@ -15,7 +17,7 @@ export default function FullScreenButton({
 
   // Listen to document fullscreen changes
   useEffect(() => {
-    const handleDocumentFullscreenChange = () => {
+    const onDocumentFullscreenChange = () => {
       const container = getContainerEl(containerRef);
       if (!container) return;
 
@@ -32,44 +34,38 @@ export default function FullScreenButton({
       setIsFullscreen(isCurrentlyFullscreen);
     };
 
-    document.addEventListener(
-      'fullscreenchange',
-      handleDocumentFullscreenChange,
-    );
+    document.addEventListener('fullscreenchange', onDocumentFullscreenChange);
     document.addEventListener(
       'webkitfullscreenchange',
-      handleDocumentFullscreenChange,
+      onDocumentFullscreenChange,
     );
     document.addEventListener(
       'mozfullscreenchange',
-      handleDocumentFullscreenChange,
+      onDocumentFullscreenChange,
     );
-    document.addEventListener(
-      'MSFullscreenChange',
-      handleDocumentFullscreenChange,
-    );
+    document.addEventListener('MSFullscreenChange', onDocumentFullscreenChange);
 
     return () => {
       document.removeEventListener(
         'fullscreenchange',
-        handleDocumentFullscreenChange,
+        onDocumentFullscreenChange,
       );
       document.removeEventListener(
         'webkitfullscreenchange',
-        handleDocumentFullscreenChange,
+        onDocumentFullscreenChange,
       );
       document.removeEventListener(
         'mozfullscreenchange',
-        handleDocumentFullscreenChange,
+        onDocumentFullscreenChange,
       );
       document.removeEventListener(
         'MSFullscreenChange',
-        handleDocumentFullscreenChange,
+        onDocumentFullscreenChange,
       );
     };
   }, [containerRef]);
 
-  const toggleFullscreen = useCallback(async () => {
+  const handleToggleFullscreen = useCallback(async () => {
     const container = getContainerEl(containerRef);
     if (!container) return;
 
@@ -153,11 +149,15 @@ export default function FullScreenButton({
   return (
     <button
       type="button"
-      onClick={toggleFullscreen}
+      onClick={handleToggleFullscreen}
       className="cursor-pointer text-xl text-white transition-transform hover:scale-110"
       aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
     >
-      {isFullscreen ? '⤓' : '⤢'}
+      {isFullscreen ? (
+        <FullscreenExitIcon size={32} />
+      ) : (
+        <FullscreenIcon size={32} />
+      )}
     </button>
   );
 }

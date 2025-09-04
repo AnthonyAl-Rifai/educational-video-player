@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, RefObject } from 'react';
+import { motion } from 'motion/react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 
 const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -17,12 +18,14 @@ export default function PlaybackSpeedMenu({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
 
-  usePlayerEvent(videoRef || { current: null }, 'ratechange', () => {
+  const onRateChange = () => {
     const video = getVideoEl(videoRef);
     if (video) setPlaybackRate(video.playbackRate);
-  });
+  };
 
-  const cyclePlaybackRate = () => {
+  usePlayerEvent(videoRef || { current: null }, 'ratechange', onRateChange);
+
+  const handleCyclePlaybackRate = () => {
     const currentIndex = SPEED_OPTIONS.indexOf(playbackRate);
     const nextIndex = (currentIndex + 1) % SPEED_OPTIONS.length;
     const nextRate = SPEED_OPTIONS[nextIndex];
@@ -33,42 +36,55 @@ export default function PlaybackSpeedMenu({
     setPlaybackRate(nextRate);
   };
 
-  const setRate = (rate: number) => {
+  const handleSetRate = (rate: number) => {
     const video = getVideoEl(videoRef);
     if (!video) return;
     video.playbackRate = rate;
     setPlaybackRate(rate);
+    setIsHovered(false); // Close menu after selection
   };
 
   return (
     <div
-      className="relative inline-block"
+      className="flex items-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <button
-        type="button"
-        onClick={cyclePlaybackRate}
-        className="cursor-pointer rounded bg-black/60 px-2 py-1 text-sm text-white"
+      {/* Horizontal speed options - animates from right to left */}
+      <motion.div
+        initial={{ width: 0, opacity: 0 }}
+        animate={{
+          width: isHovered ? 312 : 0, // 6 buttons × 48px + 5 gaps × 4px = 312px
+          opacity: isHovered ? 1 : 0,
+        }}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
+        className="mr-2 overflow-hidden"
       >
-        {playbackRate}x
-      </button>
-
-      {isHovered && (
-        <div className="absolute bottom-full z-20 w-24 rounded bg-black text-sm text-white shadow-md">
-          {[...SPEED_OPTIONS].reverse().map((rate) => (
+        <div className="flex items-center space-x-1 py-1">
+          {SPEED_OPTIONS.map((rate) => (
             <button
               key={rate}
-              onClick={() => setRate(rate)}
-              className={`w-full px-3 py-1 text-left hover:bg-white/10 ${
-                playbackRate === rate ? 'bg-white font-bold text-black' : ''
+              onClick={() => handleSetRate(rate)}
+              className={`w-12 cursor-pointer rounded px-2 py-1 text-center text-sm whitespace-nowrap transition-colors ${
+                playbackRate === rate
+                  ? 'bg-white font-bold text-black'
+                  : 'bg-black/60 text-white hover:bg-white/20'
               }`}
             >
               {rate}x
             </button>
           ))}
         </div>
-      )}
+      </motion.div>
+
+      {/* Current speed button */}
+      <button
+        type="button"
+        onClick={handleCyclePlaybackRate}
+        className="w-12 cursor-pointer rounded bg-black/60 px-2 py-1 text-center text-sm text-white hover:bg-white/20"
+      >
+        {playbackRate}x
+      </button>
     </div>
   );
 }

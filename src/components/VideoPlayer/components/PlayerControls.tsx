@@ -1,11 +1,9 @@
 'use client';
 
 import { RefObject } from 'react';
-import PlayButton from './PlayButton';
-import PauseButton from './PauseButton';
-import VolumeControl from './VolumeControl';
-import PlaybackSpeedMenu from './PlaybackSpeedMenu';
-import FullScreenButton from './FullScreenButton';
+import { motion } from 'motion/react';
+import ProgressBar from './ProgressBar';
+import ControlBar from './ControlBar';
 type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';
 
 export default function PlayerControls({
@@ -13,32 +11,36 @@ export default function PlayerControls({
   onTogglePlay,
   videoRef,
   containerRef,
+  showControls,
 }: {
   state: PlaybackState;
   onTogglePlay: () => void;
   videoRef?: RefObject<HTMLVideoElement | null>;
   containerRef?: RefObject<HTMLDivElement | null>;
+  showControls: boolean;
 }) {
-  const isPlaying = state === 'playing';
-  const isDisabled = state === 'idle' || state === 'buffering';
+  // Show controls if not playing OR if showControls is true
+  const shouldShowControls = state !== 'playing' || showControls;
 
   return (
-    <div className="pointer-events-auto absolute inset-x-0 bottom-0 flex h-14 items-center justify-between bg-gradient-to-t from-black/80 to-transparent px-4 text-white">
-      {/* Left section */}
-      <div className="flex items-center space-x-4">
-        {isPlaying ? (
-          <PauseButton onClick={onTogglePlay} disabled={isDisabled} />
-        ) : (
-          <PlayButton onClick={onTogglePlay} disabled={isDisabled} />
-        )}
-        <VolumeControl videoRef={videoRef} />
-      </div>
-
-      {/* Right section placeholder */}
-      <div className="flex items-center space-x-4">
-        <PlaybackSpeedMenu videoRef={videoRef} />
-        <FullScreenButton containerRef={containerRef} />
-      </div>
-    </div>
+    <motion.div
+      animate={{
+        opacity: shouldShowControls ? 1 : 0,
+        y: shouldShowControls ? 0 : 20,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      className="pointer-events-auto absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/80 to-transparent px-8 pb-6 text-white"
+      style={{
+        pointerEvents: shouldShowControls ? 'auto' : 'none',
+      }}
+    >
+      <ProgressBar videoRef={videoRef} />
+      <ControlBar
+        state={state}
+        onTogglePlay={onTogglePlay}
+        videoRef={videoRef}
+        containerRef={containerRef}
+      />
+    </motion.div>
   );
 }

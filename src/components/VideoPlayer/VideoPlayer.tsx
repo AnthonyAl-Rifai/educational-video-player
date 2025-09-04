@@ -60,36 +60,3 @@ export default function VideoPlayer({ src }: { src: string }) {
     </div>
   );
 }
-
-/**
-
-Within this Component
-Want to store the player in context set up in App (for in app PIP) - when a player is created store in context - use the context to access the player to subscribe to events
-PlayerControls component
-  PlayButton component - when clicked, update player state from paused to playing
-  PauseButton component - when clicked, update player state from playing to paused
-  Ellapsed time component - subsribe to time update event (usePlayerEvent a utility hook, subscribes and unmounts when needed)
-  Volume Slider component
-  Playback Speed Menu component
-  Full screen button
-  ProgressBar
-  Spinner (when buffering)
-
-Have to keep track of player state (paused, playing, buffering)
-
-For starters, add 
-If you can, avoid subscribing to time updating events because that will cause rerenders, the only components that should
-be subscribing is the Ellapsed time component and the ProgressBar
-
-in my components folder i would have folders for the component so i could have a hooks folder in it
-
-create methods like togglePlay, seekTo(position), setPlaybackRate, setVolume()
-
-for now I dont want to pass the videoRef into the child, I will just create callbacks in the VideoPlayer and pass them into the children
-
-autoplay detection. 
-
-auto-hide controls when not hovering would be cool
-
-Double click full screen
-**/

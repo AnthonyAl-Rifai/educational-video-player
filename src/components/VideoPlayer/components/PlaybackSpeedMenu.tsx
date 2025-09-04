@@ -65,7 +65,7 @@ export default function PlaybackSpeedMenu({
             <button
               key={rate}
               onClick={() => handleSetRate(rate)}
-              className={`w-12 cursor-pointer rounded px-2 py-1 text-center text-sm whitespace-nowrap transition-colors ${
+              className={`text-md flex w-12 cursor-pointer items-center justify-center rounded px-2 py-1 text-center whitespace-nowrap transition-colors ${
                 playbackRate === rate
                   ? 'bg-white font-bold text-black'
                   : 'bg-black/60 text-white hover:bg-white/20'
@@ -81,7 +81,7 @@ export default function PlaybackSpeedMenu({
       <button
         type="button"
         onClick={handleCyclePlaybackRate}
-        className="w-12 cursor-pointer rounded bg-black/60 px-2 py-1 text-center text-sm text-white hover:bg-white/20"
+        className="text-md flex w-12 cursor-pointer items-center justify-center rounded bg-black/60 px-2 py-1 text-center text-white hover:bg-white/20"
       >
         {playbackRate}x
       </button>

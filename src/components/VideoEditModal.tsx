@@ -10,7 +10,7 @@ import type { Video } from '@/types';
 interface VideoEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  video: Video;
+  video: Video | null;
 }
 
 export default function VideoEditModal({
@@ -18,28 +18,34 @@ export default function VideoEditModal({
   onClose,
   video,
 }: VideoEditModalProps) {
-  const [title, setTitle] = useState(video.title);
-  const [description, setDescription] = useState(video.description);
+  const [title, setTitle] = useState(video?.title || '');
+  const [description, setDescription] = useState(video?.description || '');
   const edit = useEditVideo();
   const { refetch: refetchVideos } = useVideos(USER_ID);
   const router = useRouter();
 
   // Update form when video prop changes
   useEffect(() => {
-    setTitle(video.title);
-    setDescription(video.description);
-  }, [video.title, video.description]);
+    if (video) {
+      setTitle(video.title);
+      setDescription(video.description);
+    }
+  }, [video?.title, video?.description]);
 
   const handleClose = useCallback(() => {
     if (!edit.isPending) {
-      setTitle(video.title);
-      setDescription(video.description);
+      if (video) {
+        setTitle(video.title);
+        setDescription(video.description);
+      }
       onClose();
     }
-  }, [edit.isPending, video.title, video.description, onClose]);
+  }, [edit.isPending, video?.title, video?.description, onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!video) return;
+    
     edit.mutate(
       { video_id: video.id, title, description },
       {
@@ -71,7 +77,7 @@ export default function VideoEditModal({
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isOpen && video && (
         <>
           {/* Backdrop */}
           <motion.div
@@ -195,14 +201,14 @@ export default function VideoEditModal({
                         edit.isPending ||
                         !title.trim() ||
                         !description.trim() ||
-                        (title === video.title &&
+                        (video && title === video.title &&
                           description === video.description)
                       }
                       className={`rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors disabled:opacity-50 ${
                         edit.isPending ||
                         !title.trim() ||
                         !description.trim() ||
-                        (title === video.title &&
+                        (video && title === video.title &&
                           description === video.description)
                           ? ''
                           : 'cursor-pointer hover:bg-blue-700'

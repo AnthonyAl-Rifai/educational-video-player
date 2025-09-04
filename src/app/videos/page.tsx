@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'motion/react';
 import { useVideos } from '@/lib/queries';
 import { USER_ID } from '@/lib/config';
 import VideoCard from '@/components/VideoCard';
 import { useModal } from '@/hooks/useModal';
+import VideoCardSkeleton from '@/components/VideoCardSkeleton';
+import FilterBar from '@/components/FilterBar';
 
 type SortOption = 'date' | 'comments';
 
@@ -38,94 +39,68 @@ export default function VideosPage() {
     }
   }, [videos, sortBy]);
 
-  if (isLoading) return <p>Loading videos…</p>;
-  if (error) return <p>Failed to load videos</p>;
-  if (!videos.length)
-    return (
-      <div>
-        <p>
-          No videos yet.{' '}
-          <button
-            type="button"
-            onClick={openModal}
-            className="underline transition-colors hover:text-blue-600"
-          >
-            Create one
-          </button>
-          .
-        </p>
-      </div>
-    );
-
-  return (
-    <div className="space-y-6">
-      {/* Filter Bar */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Videos</h1>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Sort by:</span>
-          <div className="flex rounded-lg bg-gray-100 p-1 ring-1 ring-gray-200">
-            <motion.button
-              type="button"
-              aria-pressed={sortBy === 'date'}
-              onClick={() => setSortBy('date')}
-              className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                sortBy === 'date'
-                  ? 'text-gray-900'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {sortBy === 'date' && (
-                <motion.div
-                  layoutId="activeFilter"
-                  className="absolute inset-0 rounded-md bg-white shadow-sm"
-                  transition={{
-                    type: 'spring',
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-              <span className="relative z-10">Date</span>
-            </motion.button>
-
-            <motion.button
-              type="button"
-              aria-pressed={sortBy === 'comments'}
-              onClick={() => setSortBy('comments')}
-              className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                sortBy === 'comments'
-                  ? 'text-gray-900'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {sortBy === 'comments' && (
-                <motion.div
-                  layoutId="activeFilter"
-                  className="absolute inset-0 rounded-md bg-white shadow-sm"
-                  transition={{
-                    type: 'spring',
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-              <span className="relative z-10">Comments</span>
-            </motion.button>
-          </div>
+  // Render content based on loading/error state
+  const renderContent = () => {
+    if (error && !data) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <p className="text-gray-600">Failed to load videos</p>
         </div>
-      </div>
+      );
+    }
 
-      {/* Video Grid */}
+    if (isLoading) {
+      return (
+        <ul
+          className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6"
+          aria-busy="true"
+          aria-live="polite"
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <VideoCardSkeleton key={i} />
+          ))}
+        </ul>
+      );
+    }
+
+    if (!videos.length) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <p className="text-gray-600">
+            No videos yet.
+            <button
+              type="button"
+              onClick={openModal}
+              className="underline transition-colors hover:text-blue-600"
+            >
+              Create one
+            </button>
+            .
+          </p>
+        </div>
+      );
+    }
+
+    return (
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6">
         {sortedVideos.map((video) => (
           <VideoCard key={video.id} video={video} />
         ))}
       </ul>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Filter Bar - Always rendered */}
+      <FilterBar
+        sortBy={sortBy}
+        onSortChange={setSortBy}
+        isLoading={isLoading}
+      />
+
+      {/* Dynamic Content */}
+      {renderContent()}
     </div>
   );
 }

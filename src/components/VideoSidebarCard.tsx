@@ -15,11 +15,11 @@ function formatDurationMMSS(totalSeconds: number | null): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
-interface VideoCardProps {
+interface VideoSidebarCardProps {
   video: Video;
 }
 
-export default function VideoCard({ video }: VideoCardProps) {
+export default function VideoSidebarCard({ video }: VideoSidebarCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [durationSeconds, setDurationSeconds] = useState<number | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
@@ -81,14 +81,14 @@ export default function VideoCard({ video }: VideoCardProps) {
     <li>
       <Link
         href={`/videos/${video.id}`}
-        className="group relative flex h-full cursor-pointer flex-col gap-3"
+        className="group relative flex cursor-pointer gap-3"
         onMouseEnter={startHoverPreview}
         onMouseLeave={stopHoverPreview}
         onFocus={startHoverPreview}
         onBlur={stopHoverPreview}
       >
-        {/* Preview */}
-        <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-200">
+        {/* Preview - smaller for sidebar */}
+        <div className="relative aspect-video w-36 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
           <video
             ref={videoRef}
             src={video.video_url}
@@ -99,32 +99,27 @@ export default function VideoCard({ video }: VideoCardProps) {
             className="pointer-events-none h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             aria-label={video.title}
           />
-          <span className="pointer-events-none absolute right-2 bottom-2 rounded bg-black/80 px-1.5 py-0.5 text-xs font-semibold text-white">
+          <span className="pointer-events-none absolute right-1 bottom-1 rounded bg-black/80 px-1 py-0.5 text-xs font-semibold text-white">
             {isPreviewPlaying
               ? formatDurationMMSS(remainingSeconds)
               : formatDurationMMSS(durationSeconds)}
           </span>
         </div>
 
-        {/* Details */}
-        <div className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-start gap-x-3 gap-y-0">
-          {/* Avatar */}
-          <div className="row-span-2 flex h-12 w-12 items-center justify-center self-start rounded-full bg-blue-100 font-bold text-blue-700">
-            {video.user_id.slice(0, 1).toUpperCase()}
-          </div>
-          {/* Title */}
-          <div className="col-start-2 row-start-1 line-clamp-2 self-center leading-snug font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
+        {/* Details - vertical layout */}
+        <div className="min-w-0 flex-1">
+          <h4 className="line-clamp-2 text-sm leading-snug font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
             {video.title}
-          </div>
-
-          {/* Metadata */}
-          <div className="col-start-2 row-start-2 flex flex-wrap items-center gap-x-2 self-center text-sm text-gray-500">
+          </h4>
+          <div className="mt-1 flex flex-col gap-1 text-xs text-gray-500">
             <span>{video.user_id}</span>
-            <span>• {dayjs(video.created_at).fromNow()}</span>
-            <span>
-              • {video.num_comments}{' '}
-              {video.num_comments === 1 ? 'comment' : 'comments'}
-            </span>
+            <div className="flex gap-1">
+              <span>{dayjs(video.created_at).fromNow()}</span>
+              <span>
+                • {video.num_comments}{' '}
+                {video.num_comments === 1 ? 'comment' : 'comments'}
+              </span>
+            </div>
           </div>
         </div>
       </Link>

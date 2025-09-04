@@ -1,5 +1,5 @@
 import { useVideo } from '@/lib/queries';
-import VideoPlayer from '@/components/VideoPlayer';
+import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
 import VideoPlayerSkeleton from '@/components/VideoPlayerSkeleton';
 import VideoDetails from '@/components/VideoDetails';
 import VideoDetailsSkeleton from '@/components/VideoDetailsSkeleton';

@@ -1,4 +1,5 @@
 import VideoDropdownMenu from '@/components/VideoDropdownMenu';
+import ExpandableText from '@/components/ExpandableText';
 import type { Video } from '@/types';
 
 interface VideoDetailsProps {
@@ -13,7 +14,8 @@ export default function VideoDetails({ video, onEdit }: VideoDetailsProps) {
         <h1 className="flex-1 text-2xl font-semibold">{video.title}</h1>
         <VideoDropdownMenu onEdit={() => onEdit(video)} />
       </div>
-      <p className="text-gray-600">{video.description}</p>
+
+      <ExpandableText text={video.description} />
     </div>
   );
 }

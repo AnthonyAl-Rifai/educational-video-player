@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useEditVideo, useVideos } from '@/lib/queries';
 import { USER_ID } from '@/lib/config';
-import { useRouter } from 'next/navigation';
 import type { Video } from '@/types';
 
 interface VideoEditModalProps {
@@ -18,7 +17,6 @@ export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModa
   const [description, setDescription] = useState(video?.description || '');
   const edit = useEditVideo();
   const { refetch: refetchVideos } = useVideos(USER_ID);
-  const router = useRouter();
 
   // Update form when video prop changes
   useEffect(() => {
@@ -26,7 +24,7 @@ export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModa
       setTitle(video.title);
       setDescription(video.description);
     }
-  }, [video?.title, video?.description]);
+  }, [video]);
 
   const handleClose = useCallback(() => {
     if (!edit.isPending) {
@@ -36,7 +34,7 @@ export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModa
       }
       onClose();
     }
-  }, [edit.isPending, video?.title, video?.description, onClose]);
+  }, [edit.isPending, video, onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -19,11 +19,11 @@ export function useVideoPreview(): UseVideoPreviewReturn {
   // Set initial duration and countdown when metadata loads
   const onLoadedMetadata = useCallback(() => {
     const el = videoRef.current;
-    if (el) {
+    if (el?.duration && durationSeconds === null) {
       setDurationSeconds(el.duration);
       setRemainingSeconds(el.duration);
     }
-  }, []);
+  }, [durationSeconds]);
 
   // Update remaining time as the video plays
   const onTimeUpdate = useCallback(() => {
@@ -49,6 +49,7 @@ export function useVideoPreview(): UseVideoPreviewReturn {
 
   // Register video event listeners
   usePlayerEvent(videoRef, 'loadedmetadata', onLoadedMetadata);
+  usePlayerEvent(videoRef, 'loadeddata', onLoadedMetadata);
   usePlayerEvent(videoRef, 'timeupdate', onTimeUpdate);
   usePlayerEvent(videoRef, 'play', onPlay);
   usePlayerEvent(videoRef, 'pause', onPause);

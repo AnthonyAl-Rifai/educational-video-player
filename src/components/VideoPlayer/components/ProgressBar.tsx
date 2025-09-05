@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
+import { formatTime } from '@/lib/video';
 
 function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
   return ref?.current ?? null;
@@ -104,13 +105,6 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
       };
     }
   }, [isDragging, duration, handleSeek]);
-
-  // Format time for display
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
 
   return (
     <div className="w-full">

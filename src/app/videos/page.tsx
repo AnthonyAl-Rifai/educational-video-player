@@ -1,4 +1,3 @@
-// app/videos/VideosPage.tsx
 'use client';
 
 import { useState, useMemo } from 'react';

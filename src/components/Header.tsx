@@ -80,7 +80,7 @@ export default function Header() {
       >
         <nav className="mx-auto max-w-[1504px] px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <div className="flex h-20 items-center justify-between">
-            {/* Left: brand + desktop search */}
+            {/* Left: brand */}
             <div className="flex items-center gap-6">
               <Link
                 href="/"
@@ -89,30 +89,14 @@ export default function Header() {
               >
                 <span>Edeo</span>
               </Link>
-
-              <div className="relative hidden w-64 md:block">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="search"
-                  placeholder="Search videos..."
-                  className="block w-full rounded-md border bg-white/70 py-2 pr-3 pl-10 text-lg ring-1 ring-white/40 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  aria-label="Search videos"
-                />
-              </div>
             </div>
 
             {/* Desktop nav */}
             <div className="hidden items-center gap-6 md:flex" aria-label="Primary navigation">
-              <Link href="/videos" className="px-3 py-2 text-xl text-gray-700 transition-colors hover:text-blue-600">
+              <Link
+                href="/videos"
+                className="px-3 py-2 text-xl font-bold text-gray-700 transition-colors hover:text-blue-600"
+              >
                 Videos
               </Link>
               <motion.button
@@ -190,24 +174,6 @@ export default function Header() {
                   exit="exit"
                   onClick={(e) => e.stopPropagation()} // don't close when clicking inside
                 >
-                  <motion.div variants={item} className="relative mb-6">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <svg className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type="search"
-                      placeholder="Search videos..."
-                      className="block w-full rounded-lg border bg-white/70 py-3 pr-3 pl-10 text-base ring-1 ring-white/40 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    />
-                  </motion.div>
-
                   <motion.nav variants={container} className="flex flex-col gap-4 text-2xl font-semibold">
                     <motion.div variants={item}>
                       <Link href="/videos" onClick={startClose} className="text-gray-900 hover:opacity-80">

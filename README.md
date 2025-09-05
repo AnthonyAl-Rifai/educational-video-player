@@ -2,6 +2,9 @@
 
 A modern, feature-rich educational video platform built with Next.js that allows users to create, watch, and comment on educational videos. This project showcases advanced React patterns, custom video player implementation, and a polished user experience.
 
+![Hero Section](screenshots/hero-section.png)
+*Animated hero section with smooth scrolling*
+
 ## Overview
 
 This application was developed as a technical showcase for an EdTech company, demonstrating skills in modern web development, UI/UX design, and API integration. The platform provides a seamless experience for educational content consumption with an intuitive interface and robust video player functionality.
@@ -71,13 +74,7 @@ This application was developed as a technical showcase for an EdTech company, de
    pnpm install
    ```
 
-3. **Set up environment variables**
-   Create a `.env.local` file in the root directory:
-   ```env
-   NEXT_PUBLIC_API_URL=your_api_url_here
-   ```
-
-4. **Run the development server**
+3. **Run the development server**
    ```bash
    npm run dev
    # or
@@ -144,16 +141,9 @@ This affects:
 - User-specific video filtering
 
 ### API Configuration
-Ensure your API endpoint is properly configured in the environment variables:
-```env
-NEXT_PUBLIC_API_URL=https://your-api-endpoint.com
-```
+The API endpoint is configured in `src/lib/config.ts`. The application is pre-configured to work with the provided API endpoint, so no additional setup is required.
 
 ## Screenshots
-
-### Landing Page
-![Hero Section](screenshots/hero-section.png)
-*Animated hero section with smooth scrolling*
 
 ### Video Gallery
 ![Video Grid](screenshots/video-grid.png)

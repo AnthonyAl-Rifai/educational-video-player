@@ -9,9 +9,9 @@ import type {
   EditVideoResponse,
   CreateCommentResponse,
 } from '@/types';
+import { API_URL } from './config';
 
-const BASE = process.env.NEXT_PUBLIC_API_URL!;
-if (!BASE) throw new Error('Missing NEXT_PUBLIC_API_URL');
+const BASE = API_URL;
 
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

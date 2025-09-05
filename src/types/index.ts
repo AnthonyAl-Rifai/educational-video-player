@@ -48,3 +48,6 @@ export type EditVideoResponse = { success: string };
 
 // Video Player Types
 export type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';
+
+// Filter Types
+export type SortOption = 'date' | 'comments';

@@ -9,19 +9,16 @@ import { useModal } from '@/hooks/useModal';
 import FilterBar from '@/components/filters/FilterBar';
 import ErrorState from '@/components/ui/ErrorState';
 import EmptyState from '@/components/ui/EmptyState';
-
-type SortOption = 'date' | 'comments';
+import type { SortOption } from '@/types';
 
 export default function VideosPage() {
   const { data, isLoading, error } = useVideos(USER_ID);
   const [sortBy, setSortBy] = useState<SortOption>('date');
   const { openModal } = useModal();
 
-  // Memoize the videos array to prevent unnecessary re-renders
-  const videos = useMemo(() => data ?? [], [data]);
-
   // Sort videos based on selected filter
   const sortedVideos = useMemo(() => {
+    const videos = data ?? [];
     const sorted = [...videos];
 
     switch (sortBy) {
@@ -35,7 +32,7 @@ export default function VideosPage() {
       default:
         return sorted;
     }
-  }, [videos, sortBy]);
+  }, [data, sortBy]);
 
   // Render content based on loading/error state
   const renderContent = () => {
@@ -60,7 +57,7 @@ export default function VideosPage() {
       );
     }
 
-    if (!videos.length) {
+    if (!data?.length) {
       return (
         <EmptyState
           title="No videos yet"

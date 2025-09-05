@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-
-type SortOption = 'date' | 'comments';
+import type { SortOption } from '@/types';
 
 interface FilterBarProps {
   sortBy: SortOption;

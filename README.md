@@ -1,36 +1,199 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Educational Video Player (Edeo)
+
+A modern, feature-rich educational video platform built with Next.js that allows users to create, watch, and comment on educational videos. This project showcases advanced React patterns, custom video player implementation, and a polished user experience.
+
+## Overview
+
+This application was developed as a technical showcase for an EdTech company, demonstrating skills in modern web development, UI/UX design, and API integration. The platform provides a seamless experience for educational content consumption with an intuitive interface and robust video player functionality.
+
+## Features
+
+### Video Management
+- **Video Creation & Editing**: Create new videos with title, description, and video URL
+- **Video Listing**: Browse and filter videos with sorting options (date, comments)
+- **Video Details**: View comprehensive video information and metadata
+- **Responsive Design**: Optimized for all device sizes
+
+### Custom Video Player
+- **Full Playback Control**: Play, pause, seek, and volume control
+- **Animated UI Elements**: Smooth transitions and hover effects
+- **Playback Speed Control**: Adjustable playback speeds (0.5x to 2x)
+- **Volume Control**: Animated volume slider with mute functionality
+- **Fullscreen Mode**: Double-click to enter/exit fullscreen
+- **Auto-hiding Controls**: Controls fade out during playback
+- **Keyboard Shortcuts**: Space bar for play/pause, arrow keys for seeking
+- **Buffering States**: Visual feedback during video loading
+- **Autoplay Support**: Automatic video playback when selected
+
+### Interactive Features
+- **Comment System**: Add and view comments on videos
+- **Animated Comment Form**: Smooth form interactions
+- **Real-time Updates**: Comments update dynamically
+- **User Attribution**: Track comments by user
+
+### User Experience
+- **Splash Page**: Engaging landing page with hero section
+- **Animated Header**: Header that hides/shows based on scroll
+- **Loading Skeletons**: Elegant loading states throughout the app
+- **Hover Previews**: Video previews on card hover
+- **Modal System**: Smooth modal dialogs for video creation/editing
+- **Error Handling**: Comprehensive error states and user feedback
+
+### Technical Features
+- **React Query Integration**: Efficient data fetching and caching
+- **TypeScript**: Full type safety throughout the application
+- **Custom Hooks**: Reusable logic for video player, keyboard controls, and more
+- **Context Management**: Global state for modals and user preferences
+- **Smooth Animations**: Powered by Motion (formerly Framer Motion)
+- **Smooth Scrolling**: Lenis integration for buttery smooth page scrolling
+- **Performance Optimized**: Video preloading, loading skeletons, and efficient rendering
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd educational-video-player
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file in the root directory:
+   ```env
+   NEXT_PUBLIC_API_URL=your_api_url_here
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Building for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Video Management
+1. **Creating Videos**: Click the "Create Video" button to open the modal
+2. **Editing Videos**: Use the dropdown menu on video cards to edit existing videos
+3. **Viewing Videos**: Click on any video card to open the video player
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Video Player Controls
+- **Play/Pause**: Click the video or press spacebar
+- **Seek**: Click on the progress bar or use arrow keys
+- **Volume**: Use the volume slider or scroll wheel
+- **Fullscreen**: Double-click the video or use the fullscreen button
+- **Speed**: Use the playback speed menu (0.5x - 2x)
 
-## Learn More
+### Comments
+1. Scroll down on any video page to see existing comments
+2. Use the comment form to add new comments
+3. Comments are attributed to the configured `USER_ID`
 
-To learn more about Next.js, take a look at the following resources:
+## Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework**: Next.js 15.5.2 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Animations**: Framer Motion
+- **Data Fetching**: TanStack React Query
+- **Smooth Scrolling**: Lenis
+- **Date Handling**: Day.js
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Configuration
 
-## Deploy on Vercel
+### User ID Setup
+The application uses a configurable user ID system. To change the logged-in user:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Open `src/lib/config.ts`
+2. Update the `USER_ID` constant:
+   ```typescript
+   export const USER_ID = 'your_desired_user_id';
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Note**: The application is pre-configured with `anthony_alrifai` as the USER_ID, which includes sample videos and comments that demonstrate the full functionality of the platform. This setup provides a realistic demonstration of the application's capabilities. You can change the USER_ID to any value to start with a fresh application state.
+
+This affects:
+- Video creation attribution
+- Comment attribution
+- User-specific video filtering
+
+### API Configuration
+Ensure your API endpoint is properly configured in the environment variables:
+```env
+NEXT_PUBLIC_API_URL=https://your-api-endpoint.com
+```
+
+## Screenshots
+
+### Landing Page
+![Hero Section](screenshots/hero-section.png)
+*Animated hero section with smooth scrolling*
+
+### Video Gallery
+![Video Grid](screenshots/video-grid.png)
+*Video cards with hover previews and loading skeletons*
+
+![Video Grid Loading State](screenshots/video-grid-loading-state.png)
+*Loading skeletons for better user experience*
+
+### Video Detail Page
+![Video Detail Page](screenshots/video-detail-page.png)
+*Video player with sidebar and comments*
+
+![Video Detail Loading State](screenshots/video-detail-loading-state.png)
+*Loading state for video details*
+
+### Video Player
+![Video Player Fullscreen](screenshots/video-player-fullscreen.png)
+*Fullscreen video playback with auto-hiding controls*
+
+### Comments System
+![Comment Section](screenshots/comment-section.png)
+*Interactive comment system with animated form*
+
+### Video Management
+![Create Video Modal](screenshots/create-video-modal.png)
+*Video creation modal with form validation*
+
+![Edit Video Modal](screenshots/edit-video-modal.png)
+*Video editing functionality*
+
+### Mobile Experience
+![Mobile Hero Section](screenshots/mobile-hero-section.png)
+*Mobile-optimized landing page*
+
+![Mobile Video Grid](screenshots/mobile-video-grid.png)
+*Mobile video gallery layout*
+
+![Mobile Video Detail Page](screenshots/mobile-video-detail-page.png)
+*Mobile video detail view*
+
+---
+
+**Note**: This application requires a compatible backend API that supports the video and comment management endpoints as defined in the API integration layer.

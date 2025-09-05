@@ -9,7 +9,7 @@ export default function HeroSection() {
 
   return (
     <motion.section
-      className="flex min-h-[calc(85vh)] items-center"
+      className="flex min-h-[calc(100dvh-5rem)] items-center lg:min-h-[calc(85vh)]"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}

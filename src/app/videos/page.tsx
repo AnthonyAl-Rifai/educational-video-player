@@ -8,6 +8,7 @@ import VideoCardSkeleton from '@/components/video/VideoCardSkeleton';
 import { useModal } from '@/hooks/useModal';
 import FilterBar from '@/components/filters/FilterBar';
 import ErrorState from '@/components/ui/ErrorState';
+import EmptyState from '@/components/ui/EmptyState';
 
 type SortOption = 'date' | 'comments';
 
@@ -61,15 +62,13 @@ export default function VideosPage() {
 
     if (!videos.length) {
       return (
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-600">
-            No videos yet.
-            <button type="button" onClick={openModal} className="underline transition-colors hover:text-blue-600">
-              Create one
-            </button>
-            .
-          </p>
-        </div>
+        <EmptyState
+          title="No videos yet"
+          message="Start your learning journey by creating your first video. Share your knowledge with the community!"
+          actionText="Create Video"
+          onAction={openModal}
+          variant="page"
+        />
       );
     }
 

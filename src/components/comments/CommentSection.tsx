@@ -10,7 +10,7 @@ interface CommentSectionProps {
 }
 
 export default function CommentSection({ videoId }: CommentSectionProps) {
-  const { data: comments, isLoading: commentsLoading, error: commentsError } = useComments(videoId);
+  const { data: comments, isLoading: commentsLoading, error: commentsError, refetch } = useComments(videoId);
   const addComment = useCreateComment(videoId);
 
   return (
@@ -31,7 +31,7 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
         <ErrorState
           title="Unable to load comments"
           message="We're having trouble loading the comments for this video. Please try again."
-          onRetry={() => window.location.reload()}
+          onRetry={() => refetch()}
           variant="inline"
         />
       ) : (

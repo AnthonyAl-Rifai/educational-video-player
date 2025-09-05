@@ -12,7 +12,7 @@ interface VideoSectionProps {
 }
 
 export default function VideoSection({ videoId, onEdit }: VideoSectionProps) {
-  const { data: video, isLoading, error } = useVideo(videoId);
+  const { data: video, isLoading, error, refetch } = useVideo(videoId);
 
   if (error) {
     return (
@@ -20,7 +20,7 @@ export default function VideoSection({ videoId, onEdit }: VideoSectionProps) {
         <ErrorState
           title="Video not found"
           message="We couldn't load this video. It may have been deleted or the link is invalid."
-          onRetry={() => window.location.reload()}
+          onRetry={() => refetch()}
           variant="page"
         />
       </div>

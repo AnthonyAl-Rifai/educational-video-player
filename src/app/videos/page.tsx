@@ -1,3 +1,4 @@
+// app/videos/VideosPage.tsx
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -9,39 +10,38 @@ import { useModal } from '@/hooks/useModal';
 import FilterBar from '@/components/filters/FilterBar';
 import ErrorState from '@/components/ui/ErrorState';
 import EmptyState from '@/components/ui/EmptyState';
-import type { SortOption } from '@/types';
+import type { SortOption, Video } from '@/types';
 
 export default function VideosPage() {
-  const { data, isLoading, error } = useVideos(USER_ID);
+  const { data, isLoading, error, refetch } = useVideos(USER_ID);
   const [sortBy, setSortBy] = useState<SortOption>('date');
   const { openModal } = useModal();
 
-  // Sort videos based on selected filter
   const sortedVideos = useMemo(() => {
-    const videos = data ?? [];
-    const sorted = [...videos];
+    if (!data) return [];
 
-    switch (sortBy) {
-      case 'date':
-        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      case 'comments':
-        return sorted.sort(
-          (a, b) =>
-            b.num_comments - a.num_comments || new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
-      default:
-        return sorted;
+    function sortByDateDesc(a: Video, b: Video) {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     }
+
+    function sortByCommentsThenDate(a: Video, b: Video) {
+      // Sort by comment count (descending), then by date (descending) as tiebreaker
+      const commentDifference = b.num_comments - a.num_comments;
+      return commentDifference !== 0 ? commentDifference : sortByDateDesc(a, b);
+    }
+
+    const videosToSort = [...data];
+    videosToSort.sort(sortBy === 'comments' ? sortByCommentsThenDate : sortByDateDesc);
+    return videosToSort;
   }, [data, sortBy]);
 
-  // Render content based on loading/error state
   const renderContent = () => {
     if (error && !data) {
       return (
         <ErrorState
           title="Unable to load videos"
           message="We're having trouble loading your videos. This might be a temporary issue."
-          onRetry={() => window.location.reload()}
+          onRetry={() => refetch()}
           variant="page"
         />
       );
@@ -70,7 +70,7 @@ export default function VideosPage() {
     }
 
     return (
-      <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6">
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6" aria-live="polite">
         {sortedVideos.map((video) => (
           <VideoCard key={video.id} video={video} />
         ))}
@@ -80,10 +80,7 @@ export default function VideosPage() {
 
   return (
     <div className="space-y-6">
-      {/* Filter Bar - Always rendered */}
       <FilterBar sortBy={sortBy} onSortChange={setSortBy} isLoading={isLoading} />
-
-      {/* Dynamic Content */}
       {renderContent()}
     </div>
   );

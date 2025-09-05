@@ -105,8 +105,8 @@ npm start
 
 ### Video Player Controls
 - **Play/Pause**: Click the video or press spacebar
-- **Seek**: Click on the progress bar or use arrow keys
-- **Volume**: Use the volume slider or scroll wheel
+- **Seek**: Click on the progress bar
+- **Volume**: Use the volume slider
 - **Fullscreen**: Double-click the video or use the fullscreen button
 - **Speed**: Use the playback speed menu (0.5x - 2x)
 
@@ -171,7 +171,7 @@ NEXT_PUBLIC_API_URL=https://your-api-endpoint.com
 
 ### Video Player
 ![Video Player Fullscreen](screenshots/video-player-fullscreen.png)
-*Fullscreen video playback with auto-hiding controls*
+*Fullscreen video playback with custom controls*
 
 ### Comments System
 ![Comment Section](screenshots/comment-section.png)

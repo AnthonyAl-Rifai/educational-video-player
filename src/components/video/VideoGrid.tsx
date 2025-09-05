@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useVideos } from '@/lib/queries';
 import VideoCard from './VideoCard';
 import VideoCardSkeleton from './VideoCardSkeleton';
+import ErrorState from '@/components/ui/ErrorState';
 import { USER_ID } from '@/lib/config';
 
 interface VideoGridProps {
@@ -37,7 +38,7 @@ export default function VideoGrid({ currentVideoId, title = 'More Videos' }: Vid
     return (
       <section className="space-y-4">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-gray-500">Failed to load videos</p>
+        <ErrorState message="Failed to load videos" variant="minimal" />
       </section>
     );
   }

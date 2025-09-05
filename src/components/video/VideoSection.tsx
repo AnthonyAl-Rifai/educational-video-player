@@ -3,6 +3,7 @@ import VideoPlayer from './VideoPlayer/VideoPlayer';
 import VideoPlayerSkeleton from './VideoPlayerSkeleton';
 import VideoDetails from './VideoDetails';
 import VideoDetailsSkeleton from './VideoDetailsSkeleton';
+import ErrorState from '@/components/ui/ErrorState';
 import type { Video } from '@/types';
 
 interface VideoSectionProps {
@@ -11,7 +12,21 @@ interface VideoSectionProps {
 }
 
 export default function VideoSection({ videoId, onEdit }: VideoSectionProps) {
-  const { data: video, isLoading } = useVideo(videoId);
+  const { data: video, isLoading, error } = useVideo(videoId);
+
+  if (error) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <ErrorState
+          title="Video not found"
+          message="We couldn't load this video. It may have been deleted or the link is invalid."
+          onRetry={() => window.location.reload()}
+          variant="page"
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       {isLoading ? <VideoPlayerSkeleton /> : video ? <VideoPlayer src={video.video_url} /> : null}

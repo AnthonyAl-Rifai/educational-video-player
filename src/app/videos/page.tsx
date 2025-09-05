@@ -7,6 +7,7 @@ import VideoCard from '@/components/video/VideoCard';
 import VideoCardSkeleton from '@/components/video/VideoCardSkeleton';
 import { useModal } from '@/hooks/useModal';
 import FilterBar from '@/components/filters/FilterBar';
+import ErrorState from '@/components/ui/ErrorState';
 
 type SortOption = 'date' | 'comments';
 
@@ -39,9 +40,12 @@ export default function VideosPage() {
   const renderContent = () => {
     if (error && !data) {
       return (
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-600">Failed to load videos</p>
-        </div>
+        <ErrorState
+          title="Unable to load videos"
+          message="We're having trouble loading your videos. This might be a temporary issue."
+          onRetry={() => window.location.reload()}
+          variant="page"
+        />
       );
     }
 

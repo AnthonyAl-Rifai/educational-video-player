@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useVideos } from '@/lib/queries';
 import VideoSidebarCard from './VideoSidebarCard';
 import VideoSidebarCardSkeleton from './VideoSidebarCardSkeleton';
+import ErrorState from '@/components/ui/ErrorState';
 import { USER_ID } from '@/lib/config';
 
 interface VideoSidebarProps {
@@ -26,7 +27,7 @@ export default function VideoSidebar({ videoId }: VideoSidebarProps) {
           ))}
         </ul>
       ) : error || !videos ? (
-        <p className="text-gray-500">Failed to load videos</p>
+        <ErrorState message="Failed to load videos" variant="minimal" />
       ) : otherVideos.length === 0 ? (
         <p className="text-gray-500">No other videos available</p>
       ) : (

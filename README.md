@@ -57,7 +57,7 @@ Some optimizations I would want to add:
 
 - **Thumbnail Generation**: Need image URLs and other video metadata so we can load videos on hover rather than load all at once
 - **Lazy Loading Images**: Implement lazy loading for video thumbnails to improve initial page load performance
-- **Infinite Scroll**: Replace pagination with infinite scroll for seamless video browsing
+- **Infinite Scroll**: Add pagination/infinite scroll for better performance with large video collections
 - **Video Metadata Caching**: Cache video duration and dimensions to reduce repeated API calls
 
 ## Getting Started

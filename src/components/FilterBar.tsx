@@ -10,11 +10,7 @@ interface FilterBarProps {
   isLoading?: boolean;
 }
 
-export default function FilterBar({
-  sortBy,
-  onSortChange,
-  isLoading = false,
-}: FilterBarProps) {
+export default function FilterBar({ sortBy, onSortChange, isLoading = false }: FilterBarProps) {
   return (
     <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-gray-900">Videos</h1>
@@ -27,9 +23,7 @@ export default function FilterBar({
             onClick={() => onSortChange('date')}
             disabled={isLoading}
             className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              sortBy === 'date'
-                ? 'text-gray-900'
-                : 'text-gray-600 hover:text-gray-900'
+              sortBy === 'date' ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'
             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
             whileHover={!isLoading ? { scale: 1.02 } : {}}
             whileTap={!isLoading ? { scale: 0.98 } : {}}
@@ -54,9 +48,7 @@ export default function FilterBar({
             onClick={() => onSortChange('comments')}
             disabled={isLoading}
             className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              sortBy === 'comments'
-                ? 'text-gray-900'
-                : 'text-gray-600 hover:text-gray-900'
+              sortBy === 'comments' ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'
             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
             whileHover={!isLoading ? { scale: 1.02 } : {}}
             whileTap={!isLoading ? { scale: 0.98 } : {}}

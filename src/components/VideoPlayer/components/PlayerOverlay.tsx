@@ -17,12 +17,12 @@ export default function PlayerOverlay({
 }: {
   state: PlaybackState;
   onTogglePlay: () => void;
-  videoRef?: RefObject<HTMLVideoElement | null>;
-  containerRef?: RefObject<HTMLDivElement | null>;
+  videoRef: RefObject<HTMLVideoElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
 }) {
-  const [feedbackIcon, setFeedbackIcon] = useState<'play' | 'pause' | null>(
-    null,
-  );
+  const [feedbackIcon, setFeedbackIcon] = useState<
+    'play' | 'pause' | undefined
+  >(undefined);
   const [isHovering, setIsHovering] = useState(false);
   const [showControls, setShowControls] = useState(true);
 
@@ -47,7 +47,7 @@ export default function PlayerOverlay({
 
   useEffect(() => {
     if (!feedbackIcon) return;
-    const timeout = setTimeout(() => setFeedbackIcon(null), 500);
+    const timeout = setTimeout(() => setFeedbackIcon(undefined), 500);
     return () => clearTimeout(timeout);
   }, [feedbackIcon]);
 

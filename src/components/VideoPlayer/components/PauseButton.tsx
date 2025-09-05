@@ -7,10 +7,7 @@ interface PauseButtonProps {
   disabled?: boolean;
 }
 
-export default function PauseButton({
-  onClick,
-  disabled = false,
-}: PauseButtonProps) {
+export default function PauseButton({ onClick, disabled = false }: PauseButtonProps) {
   return (
     <div className="flex h-10 w-10 items-center justify-center">
       <button

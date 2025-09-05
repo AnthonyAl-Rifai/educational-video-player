@@ -22,11 +22,7 @@ export default function VideoDetailPage() {
         <CommentSection videoId={videoId} />
 
         {/* Edit Modal */}
-        <VideoEditModal
-          isOpen={!!editingVideo}
-          onClose={() => setEditingVideo(null)}
-          video={editingVideo!}
-        />
+        <VideoEditModal isOpen={!!editingVideo} onClose={() => setEditingVideo(null)} video={editingVideo!} />
       </div>
 
       {/* Sidebar */}

@@ -7,10 +7,7 @@ interface PlayButtonProps {
   disabled?: boolean;
 }
 
-export default function PlayButton({
-  onClick,
-  disabled = false,
-}: PlayButtonProps) {
+export default function PlayButton({ onClick, disabled = false }: PlayButtonProps) {
   return (
     <div className="flex h-10 w-10 items-center justify-center">
       <button

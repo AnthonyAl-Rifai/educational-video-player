@@ -9,19 +9,13 @@ export const metadata = {
   description: 'Educational Video Player',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <Providers>
           <Header />
-          <main className="mx-auto mt-26 min-h-screen max-w-[1504px] px-4 sm:px-6 lg:px-8">
-            {children}
-          </main>
+          <main className="mx-auto mt-26 min-h-screen max-w-[1504px] px-4 sm:px-6 lg:px-8">{children}</main>
           <Footer />
           <VideoCreateModal />
         </Providers>

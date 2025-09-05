@@ -2,13 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import type {
-  Video,
-  Comment,
-  CreateVideoRequest,
-  EditVideoRequest,
-  CreateCommentRequest,
-} from '@/types';
+import type { Video, Comment, CreateVideoRequest, EditVideoRequest, CreateCommentRequest } from '@/types';
 
 // READS
 export function useVideos(user_id: string) {
@@ -71,8 +65,7 @@ export function useEditVideo() {
 export function useCreateComment(video_id: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (body: Omit<CreateCommentRequest, 'video_id'>) =>
-      api.createComment({ video_id, ...body }),
+    mutationFn: (body: Omit<CreateCommentRequest, 'video_id'>) => api.createComment({ video_id, ...body }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['comments', video_id] });
     },

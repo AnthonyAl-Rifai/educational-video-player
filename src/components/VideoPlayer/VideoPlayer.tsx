@@ -39,17 +39,8 @@ export default function VideoPlayer({ src }: { src: string }) {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative aspect-video w-full overflow-hidden rounded-lg"
-    >
-      <video
-        ref={videoRef}
-        src={src}
-        playsInline
-        preload="metadata"
-        className="absolute inset-0 h-full w-full"
-      />
+    <div ref={containerRef} className="relative aspect-video w-full overflow-hidden rounded-lg">
+      <video ref={videoRef} src={src} playsInline preload="metadata" className="absolute inset-0 h-full w-full" />
       <PlayerOverlay
         state={playbackState}
         onTogglePlay={handleTogglePlay}

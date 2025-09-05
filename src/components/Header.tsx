@@ -2,12 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from 'motion/react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
 import { useModal } from '@/hooks/useModal';
 
 export default function Header() {
@@ -83,10 +78,7 @@ export default function Header() {
         className={`fixed inset-x-0 top-0 z-50 border-b transition-transform duration-300 will-change-transform ${mobileOpen ? 'bg-white/90 backdrop-blur' : 'bg-white/60 backdrop-blur-md'} border-white/40`}
         style={{ transform: isVisible ? 'translateY(0)' : 'translateY(-100%)' }}
       >
-        <nav
-          className="mx-auto max-w-[1504px] px-4 sm:px-6 lg:px-8"
-          aria-label="Main navigation"
-        >
+        <nav className="mx-auto max-w-[1504px] px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <div className="flex h-20 items-center justify-between">
             {/* Left: brand + desktop search */}
             <div className="flex items-center gap-6">
@@ -100,12 +92,7 @@ export default function Header() {
 
               <div className="relative hidden w-64 md:block">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -124,14 +111,8 @@ export default function Header() {
             </div>
 
             {/* Desktop nav */}
-            <div
-              className="hidden items-center gap-6 md:flex"
-              aria-label="Primary navigation"
-            >
-              <Link
-                href="/videos"
-                className="px-3 py-2 text-xl text-gray-700 transition-colors hover:text-blue-600"
-              >
+            <div className="hidden items-center gap-6 md:flex" aria-label="Primary navigation">
+              <Link href="/videos" className="px-3 py-2 text-xl text-gray-700 transition-colors hover:text-blue-600">
                 Videos
               </Link>
               <motion.button
@@ -174,18 +155,8 @@ export default function Header() {
         aria-controls="mobile-overlay"
       >
         {/* same icon for now so it never visually switches */}
-        <svg
-          className="h-8 w-8"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
+        <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
@@ -221,12 +192,7 @@ export default function Header() {
                 >
                   <motion.div variants={item} className="relative mb-6">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <svg
-                        className="h-5 w-5 text-gray-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
+                      <svg className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -242,16 +208,9 @@ export default function Header() {
                     />
                   </motion.div>
 
-                  <motion.nav
-                    variants={container}
-                    className="flex flex-col gap-4 text-2xl font-semibold"
-                  >
+                  <motion.nav variants={container} className="flex flex-col gap-4 text-2xl font-semibold">
                     <motion.div variants={item}>
-                      <Link
-                        href="/videos"
-                        onClick={startClose}
-                        className="text-gray-900 hover:opacity-80"
-                      >
+                      <Link href="/videos" onClick={startClose} className="text-gray-900 hover:opacity-80">
                         Videos
                       </Link>
                     </motion.div>

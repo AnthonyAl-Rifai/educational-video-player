@@ -25,12 +25,7 @@ export default function VideoSidebarCard({ video }: VideoSidebarCardProps) {
       >
         {/* Preview - fixed width with aspect-video for sidebar layout */}
         <div className="w-36 flex-shrink-0">
-          <VideoPreview
-            src={video.video_url}
-            title={video.title}
-            isPlaying={isHovered}
-            inSidebar
-          />
+          <VideoPreview src={video.video_url} title={video.title} isPlaying={isHovered} inSidebar />
         </div>
 
         {/* Details - vertical layout */}
@@ -43,8 +38,7 @@ export default function VideoSidebarCard({ video }: VideoSidebarCardProps) {
             <div className="flex gap-1">
               <span>{dayjs(video.created_at).fromNow()}</span>
               <span>
-                • {video.num_comments}{' '}
-                {video.num_comments === 1 ? 'comment' : 'comments'}
+                • {video.num_comments} {video.num_comments === 1 ? 'comment' : 'comments'}
               </span>
             </div>
           </div>

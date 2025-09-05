@@ -14,9 +14,5 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     setIsModalOpen(false);
   };
 
-  return (
-    <ModalContext.Provider value={{ isModalOpen, openModal, closeModal }}>
-      {children}
-    </ModalContext.Provider>
-  );
+  return <ModalContext.Provider value={{ isModalOpen, openModal, closeModal }}>{children}</ModalContext.Provider>;
 }

@@ -90,21 +90,11 @@ export default function CommentForm({
           <motion.button
             type="submit"
             className={`cursor-pointer rounded bg-blue-600 px-3 py-2 text-sm text-white transition-colors duration-200 disabled:cursor-auto disabled:opacity-50 ${
-              !pending && content.trim() && userId.trim()
-                ? 'hover:bg-blue-700'
-                : ''
+              !pending && content.trim() && userId.trim() ? 'hover:bg-blue-700' : ''
             }`}
             disabled={pending || !content.trim() || !userId.trim()}
-            whileHover={
-              pending || !content.trim() || !userId.trim()
-                ? {}
-                : { scale: 1.02 }
-            }
-            whileTap={
-              pending || !content.trim() || !userId.trim()
-                ? {}
-                : { scale: 0.98 }
-            }
+            whileHover={pending || !content.trim() || !userId.trim() ? {} : { scale: 1.02 }}
+            whileTap={pending || !content.trim() || !userId.trim() ? {} : { scale: 0.98 }}
           >
             {pending ? 'Posting…' : 'Comment'}
           </motion.button>

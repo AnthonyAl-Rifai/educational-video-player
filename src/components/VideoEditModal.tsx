@@ -13,11 +13,7 @@ interface VideoEditModalProps {
   video: Video | null;
 }
 
-export default function VideoEditModal({
-  isOpen,
-  onClose,
-  video,
-}: VideoEditModalProps) {
+export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModalProps) {
   const [title, setTitle] = useState(video?.title || '');
   const [description, setDescription] = useState(video?.description || '');
   const edit = useEditVideo();
@@ -45,7 +41,7 @@ export default function VideoEditModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!video) return;
-    
+
     edit.mutate(
       { video_id: video.id, title, description },
       {
@@ -99,15 +95,10 @@ export default function VideoEditModal({
             aria-modal="true"
           >
             <div className="relative w-full max-w-xl">
-              <motion.div
-                className="rounded-2xl bg-white p-6 shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <motion.div className="rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Edit Video
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900">Edit Video</h2>
                   <button
                     type="button"
                     onClick={handleClose}
@@ -117,18 +108,8 @@ export default function VideoEditModal({
                     }`}
                     aria-label="Close modal"
                   >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
@@ -136,10 +117,7 @@ export default function VideoEditModal({
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="title"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="title" className="mb-2 block text-sm font-medium text-gray-700">
                       Title
                     </label>
                     <input
@@ -155,10 +133,7 @@ export default function VideoEditModal({
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="description"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="description" className="mb-2 block text-sm font-medium text-gray-700">
                       Description
                     </label>
                     <textarea
@@ -177,9 +152,7 @@ export default function VideoEditModal({
                   {/* Error message */}
                   {edit.error && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-                      <p className="text-sm text-red-600">
-                        Failed to update video. Please try again.
-                      </p>
+                      <p className="text-sm text-red-600">Failed to update video. Please try again.</p>
                     </div>
                   )}
 
@@ -201,15 +174,13 @@ export default function VideoEditModal({
                         edit.isPending ||
                         !title.trim() ||
                         !description.trim() ||
-                        (video && title === video.title &&
-                          description === video.description)
+                        (video && title === video.title && description === video.description)
                       }
                       className={`rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors disabled:opacity-50 ${
                         edit.isPending ||
                         !title.trim() ||
                         !description.trim() ||
-                        (video && title === video.title &&
-                          description === video.description)
+                        (video && title === video.title && description === video.description)
                           ? ''
                           : 'cursor-pointer hover:bg-blue-700'
                       }`}

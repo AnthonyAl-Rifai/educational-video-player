@@ -13,17 +13,10 @@ interface VideoSidebarProps {
 export default function VideoSidebar({ videoId }: VideoSidebarProps) {
   const { data: videos, isLoading, error } = useVideos(USER_ID);
 
-  const otherVideos = useMemo(
-    () => (videos ?? []).filter((v) => v.id !== videoId),
-    [videos, videoId],
-  );
+  const otherVideos = useMemo(() => (videos ?? []).filter((v) => v.id !== videoId), [videos, videoId]);
 
   return (
-    <div
-      className="w-80 space-y-4"
-      aria-busy={isLoading ? 'true' : undefined}
-      aria-live="polite"
-    >
+    <div className="w-80 space-y-4" aria-busy={isLoading ? 'true' : undefined} aria-live="polite">
       <h3 className="text-lg font-semibold">More Videos</h3>
 
       {isLoading ? (

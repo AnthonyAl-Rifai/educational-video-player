@@ -11,11 +11,7 @@ function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
   return ref?.current ?? null;
 }
 
-export default function VolumeControl({
-  videoRef,
-}: {
-  videoRef?: RefObject<HTMLVideoElement | null>;
-}) {
+export default function VolumeControl({ videoRef }: { videoRef?: RefObject<HTMLVideoElement | null> }) {
   const [volume, setVolume] = useState(1); // 0 to 1
   const [isMuted, setIsMuted] = useState(false);
   const [isHovering, setIsHovering] = useState(false);

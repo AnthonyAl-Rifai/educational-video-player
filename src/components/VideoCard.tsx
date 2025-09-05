@@ -24,11 +24,7 @@ export default function VideoCard({ video }: VideoCardProps) {
         onBlur={() => setIsHovered(false)}
       >
         {/* Preview */}
-        <VideoPreview
-          src={video.video_url}
-          title={video.title}
-          isPlaying={isHovered}
-        />
+        <VideoPreview src={video.video_url} title={video.title} isPlaying={isHovered} />
 
         {/* Details */}
         <div className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-start gap-x-3 gap-y-0">
@@ -46,8 +42,7 @@ export default function VideoCard({ video }: VideoCardProps) {
             <span>{video.user_id}</span>
             <span>• {dayjs(video.created_at).fromNow()}</span>
             <span>
-              • {video.num_comments}{' '}
-              {video.num_comments === 1 ? 'comment' : 'comments'}
+              • {video.num_comments} {video.num_comments === 1 ? 'comment' : 'comments'}
             </span>
           </div>
         </div>

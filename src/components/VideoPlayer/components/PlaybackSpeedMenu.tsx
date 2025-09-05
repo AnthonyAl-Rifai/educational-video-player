@@ -45,11 +45,7 @@ export default function PlaybackSpeedMenu({
   };
 
   return (
-    <div
-      className="flex items-center"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="flex items-center" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       {/* Horizontal speed options - animates from right to left */}
       <motion.div
         initial={{ width: 0, opacity: 0 }}

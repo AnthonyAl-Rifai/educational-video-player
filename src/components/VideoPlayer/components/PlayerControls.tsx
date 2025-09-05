@@ -15,7 +15,7 @@ export default function PlayerControls({
 }: {
   state: PlaybackState;
   onTogglePlay: () => void;
-  videoRef?: RefObject<HTMLVideoElement | null>;
+  videoRef: RefObject<HTMLVideoElement | null>;
   containerRef?: RefObject<HTMLDivElement | null>;
   showControls: boolean;
 }) {
@@ -35,12 +35,7 @@ export default function PlayerControls({
       }}
     >
       <ProgressBar videoRef={videoRef} />
-      <ControlBar
-        state={state}
-        onTogglePlay={onTogglePlay}
-        videoRef={videoRef}
-        containerRef={containerRef}
-      />
+      <ControlBar state={state} onTogglePlay={onTogglePlay} videoRef={videoRef} containerRef={containerRef} />
     </motion.div>
   );
 }

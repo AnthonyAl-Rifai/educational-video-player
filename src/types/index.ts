@@ -47,9 +47,4 @@ export type CreateCommentResponse = { success: string };
 export type EditVideoResponse = { success: string };
 
 // Video Player Types
-export type PlaybackState =
-  | 'idle'
-  | 'ready'
-  | 'playing'
-  | 'paused'
-  | 'buffering';
+export type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';

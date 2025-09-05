@@ -16,12 +16,9 @@ export function useFullscreen(containerRef?: RefObject<HTMLDivElement | null>) {
 
     return !!(
       document.fullscreenElement === container ||
-      (document as Document & { webkitFullscreenElement?: Element })
-        .webkitFullscreenElement === container ||
-      (document as Document & { mozFullScreenElement?: Element })
-        .mozFullScreenElement === container ||
-      (document as Document & { msFullscreenElement?: Element })
-        .msFullscreenElement === container
+      (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement === container ||
+      (document as Document & { mozFullScreenElement?: Element }).mozFullScreenElement === container ||
+      (document as Document & { msFullscreenElement?: Element }).msFullscreenElement === container
     );
   }, [containerRef]);
 
@@ -33,33 +30,15 @@ export function useFullscreen(containerRef?: RefObject<HTMLDivElement | null>) {
     };
 
     document.addEventListener('fullscreenchange', onDocumentFullscreenChange);
-    document.addEventListener(
-      'webkitfullscreenchange',
-      onDocumentFullscreenChange,
-    );
-    document.addEventListener(
-      'mozfullscreenchange',
-      onDocumentFullscreenChange,
-    );
+    document.addEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+    document.addEventListener('mozfullscreenchange', onDocumentFullscreenChange);
     document.addEventListener('MSFullscreenChange', onDocumentFullscreenChange);
 
     return () => {
-      document.removeEventListener(
-        'fullscreenchange',
-        onDocumentFullscreenChange,
-      );
-      document.removeEventListener(
-        'webkitfullscreenchange',
-        onDocumentFullscreenChange,
-      );
-      document.removeEventListener(
-        'mozfullscreenchange',
-        onDocumentFullscreenChange,
-      );
-      document.removeEventListener(
-        'MSFullscreenChange',
-        onDocumentFullscreenChange,
-      );
+      document.removeEventListener('fullscreenchange', onDocumentFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', onDocumentFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', onDocumentFullscreenChange);
     };
   }, [checkFullscreenState]);
 
@@ -121,23 +100,11 @@ export function useFullscreen(containerRef?: RefObject<HTMLDivElement | null>) {
             }
           ).webkitExitFullscreen
         ) {
-          await (
-            document as Document & { webkitExitFullscreen: () => Promise<void> }
-          ).webkitExitFullscreen();
-        } else if (
-          (document as Document & { mozCancelFullScreen?: () => Promise<void> })
-            .mozCancelFullScreen
-        ) {
-          await (
-            document as Document & { mozCancelFullScreen: () => Promise<void> }
-          ).mozCancelFullScreen();
-        } else if (
-          (document as Document & { msExitFullscreen?: () => Promise<void> })
-            .msExitFullscreen
-        ) {
-          await (
-            document as Document & { msExitFullscreen: () => Promise<void> }
-          ).msExitFullscreen();
+          await (document as Document & { webkitExitFullscreen: () => Promise<void> }).webkitExitFullscreen();
+        } else if ((document as Document & { mozCancelFullScreen?: () => Promise<void> }).mozCancelFullScreen) {
+          await (document as Document & { mozCancelFullScreen: () => Promise<void> }).mozCancelFullScreen();
+        } else if ((document as Document & { msExitFullscreen?: () => Promise<void> }).msExitFullscreen) {
+          await (document as Document & { msExitFullscreen: () => Promise<void> }).msExitFullscreen();
         }
       }
     } catch (error) {
@@ -207,23 +174,11 @@ export function useFullscreen(containerRef?: RefObject<HTMLDivElement | null>) {
           }
         ).webkitExitFullscreen
       ) {
-        await (
-          document as Document & { webkitExitFullscreen: () => Promise<void> }
-        ).webkitExitFullscreen();
-      } else if (
-        (document as Document & { mozCancelFullScreen?: () => Promise<void> })
-          .mozCancelFullScreen
-      ) {
-        await (
-          document as Document & { mozCancelFullScreen: () => Promise<void> }
-        ).mozCancelFullScreen();
-      } else if (
-        (document as Document & { msExitFullscreen?: () => Promise<void> })
-          .msExitFullscreen
-      ) {
-        await (
-          document as Document & { msExitFullscreen: () => Promise<void> }
-        ).msExitFullscreen();
+        await (document as Document & { webkitExitFullscreen: () => Promise<void> }).webkitExitFullscreen();
+      } else if ((document as Document & { mozCancelFullScreen?: () => Promise<void> }).mozCancelFullScreen) {
+        await (document as Document & { mozCancelFullScreen: () => Promise<void> }).mozCancelFullScreen();
+      } else if ((document as Document & { msExitFullscreen?: () => Promise<void> }).msExitFullscreen) {
+        await (document as Document & { msExitFullscreen: () => Promise<void> }).msExitFullscreen();
       }
     } catch (error) {
       console.warn('Exit fullscreen failed:', error);

@@ -5,10 +5,7 @@ import { motion } from 'motion/react';
 
 type Props = { text: string; collapsedHeightPx?: number };
 
-export default function ExpandableText({
-  text,
-  collapsedHeightPx = 48,
-}: Props) {
+export default function ExpandableText({ text, collapsedHeightPx = 48 }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedHeightPx, setExpandedHeightPx] = useState<number | null>(null);
@@ -41,9 +38,7 @@ export default function ExpandableText({
       <motion.div
         initial={{ maxHeight: collapsedHeightPx }}
         animate={{
-          maxHeight: isExpanded
-            ? (expandedHeightPx ?? collapsedHeightPx)
-            : collapsedHeightPx,
+          maxHeight: isExpanded ? (expandedHeightPx ?? collapsedHeightPx) : collapsedHeightPx,
         }}
         transition={{ type: 'spring', stiffness: 400, damping: 40 }}
         className="overflow-hidden"

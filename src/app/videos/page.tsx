@@ -24,15 +24,11 @@ export default function VideosPage() {
 
     switch (sortBy) {
       case 'date':
-        return sorted.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
+        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       case 'comments':
         return sorted.sort(
           (a, b) =>
-            b.num_comments - a.num_comments ||
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+            b.num_comments - a.num_comments || new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         );
       default:
         return sorted;
@@ -51,11 +47,7 @@ export default function VideosPage() {
 
     if (isLoading) {
       return (
-        <ul
-          className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6"
-          aria-busy="true"
-          aria-live="polite"
-        >
+        <ul className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-6" aria-busy="true" aria-live="polite">
           {Array.from({ length: 12 }, (_, i) => (
             <VideoCardSkeleton key={i} />
           ))}
@@ -68,11 +60,7 @@ export default function VideosPage() {
         <div className="flex items-center justify-center py-12">
           <p className="text-gray-600">
             No videos yet.
-            <button
-              type="button"
-              onClick={openModal}
-              className="underline transition-colors hover:text-blue-600"
-            >
+            <button type="button" onClick={openModal} className="underline transition-colors hover:text-blue-600">
               Create one
             </button>
             .
@@ -93,11 +81,7 @@ export default function VideosPage() {
   return (
     <div className="space-y-6">
       {/* Filter Bar - Always rendered */}
-      <FilterBar
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-        isLoading={isLoading}
-      />
+      <FilterBar sortBy={sortBy} onSortChange={setSortBy} isLoading={isLoading} />
 
       {/* Dynamic Content */}
       {renderContent()}

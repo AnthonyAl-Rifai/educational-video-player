@@ -11,20 +11,9 @@ interface VideoPreviewProps {
   inSidebar?: boolean;
 }
 
-export default function VideoPreview({
-  src,
-  title,
-  isPlaying,
-  inSidebar = false,
-}: VideoPreviewProps) {
-  const {
-    videoRef,
-    durationSeconds,
-    remainingSeconds,
-    isPreviewPlaying,
-    startHoverPreview,
-    stopHoverPreview,
-  } = useVideoPreview();
+export default function VideoPreview({ src, title, isPlaying, inSidebar = false }: VideoPreviewProps) {
+  const { videoRef, durationSeconds, remainingSeconds, isPreviewPlaying, startHoverPreview, stopHoverPreview } =
+    useVideoPreview();
 
   // Control preview based on parent's play state
   useEffect(() => {
@@ -35,9 +24,7 @@ export default function VideoPreview({
     }
   }, [isPlaying, startHoverPreview, stopHoverPreview]);
   return (
-    <div
-      className={`relative aspect-video overflow-hidden ${inSidebar ? 'rounded-lg' : 'rounded-xl'} bg-gray-200`}
-    >
+    <div className={`relative aspect-video overflow-hidden ${inSidebar ? 'rounded-lg' : 'rounded-xl'} bg-gray-200`}>
       <video
         ref={videoRef}
         src={src}
@@ -50,14 +37,10 @@ export default function VideoPreview({
       />
       <span
         className={`pointer-events-none absolute rounded bg-black/80 font-semibold text-white ${
-          inSidebar
-            ? 'right-1 bottom-1 px-1 py-0.5 text-xs'
-            : 'right-2 bottom-2 px-1.5 py-0.5 text-xs'
+          inSidebar ? 'right-1 bottom-1 px-1 py-0.5 text-xs' : 'right-2 bottom-2 px-1.5 py-0.5 text-xs'
         }`}
       >
-        {isPreviewPlaying
-          ? formatTime(remainingSeconds)
-          : formatTime(durationSeconds)}
+        {isPreviewPlaying ? formatTime(remainingSeconds) : formatTime(durationSeconds)}
       </span>
     </div>
   );

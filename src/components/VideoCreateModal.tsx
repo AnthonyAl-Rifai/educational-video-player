@@ -89,38 +89,21 @@ export default function VideoCreateModal() {
             aria-modal="true"
           >
             <div className="relative w-full max-w-xl">
-              <motion.div
-                className="rounded-2xl bg-white p-6 shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <motion.div className="rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Create New Video
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900">Create New Video</h2>
                   <button
                     type="button"
                     onClick={handleClose}
                     disabled={create.isPending}
                     className={`p-2 text-gray-400 transition-colors disabled:opacity-50 ${
-                      create.isPending
-                        ? ''
-                        : 'cursor-pointer hover:text-gray-600'
+                      create.isPending ? '' : 'cursor-pointer hover:text-gray-600'
                     }`}
                     aria-label="Close modal"
                   >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
@@ -128,10 +111,7 @@ export default function VideoCreateModal() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="title"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="title" className="mb-2 block text-sm font-medium text-gray-700">
                       Title
                     </label>
                     <input
@@ -147,10 +127,7 @@ export default function VideoCreateModal() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="description"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="description" className="mb-2 block text-sm font-medium text-gray-700">
                       Description
                     </label>
                     <textarea
@@ -167,10 +144,7 @@ export default function VideoCreateModal() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="videoUrl"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="videoUrl" className="mb-2 block text-sm font-medium text-gray-700">
                       Video URL
                     </label>
                     <input
@@ -183,17 +157,13 @@ export default function VideoCreateModal() {
                       required
                       disabled={create.isPending}
                     />
-                    <p className="mt-1 text-sm text-gray-500">
-                      Enter a direct link to an MP4 video file
-                    </p>
+                    <p className="mt-1 text-sm text-gray-500">Enter a direct link to an MP4 video file</p>
                   </div>
 
                   {/* Error message */}
                   {create.error && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-                      <p className="text-sm text-red-600">
-                        Failed to create video. Please try again.
-                      </p>
+                      <p className="text-sm text-red-600">Failed to create video. Please try again.</p>
                     </div>
                   )}
 
@@ -204,26 +174,16 @@ export default function VideoCreateModal() {
                       onClick={handleClose}
                       disabled={create.isPending}
                       className={`rounded-lg bg-gray-100 px-6 py-3 text-gray-700 transition-colors disabled:opacity-50 ${
-                        create.isPending
-                          ? ''
-                          : 'cursor-pointer hover:bg-gray-200'
+                        create.isPending ? '' : 'cursor-pointer hover:bg-gray-200'
                       }`}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      disabled={
-                        create.isPending ||
-                        !title.trim() ||
-                        !description.trim() ||
-                        !videoUrl.trim()
-                      }
+                      disabled={create.isPending || !title.trim() || !description.trim() || !videoUrl.trim()}
                       className={`rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors disabled:opacity-50 ${
-                        create.isPending ||
-                        !title.trim() ||
-                        !description.trim() ||
-                        !videoUrl.trim()
+                        create.isPending || !title.trim() || !description.trim() || !videoUrl.trim()
                           ? ''
                           : 'cursor-pointer hover:bg-blue-700'
                       }`}

@@ -31,15 +31,12 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
       ) : video ? (
         <>
           <h2 className="text-lg font-semibold">
-            {comments?.length || 0}{' '}
-            {(comments?.length || 0) === 1 ? 'Comment' : 'Comments'}
+            {comments?.length || 0} {(comments?.length || 0) === 1 ? 'Comment' : 'Comments'}
           </h2>
 
           <LayoutGroup>
             <CommentForm
-              onSubmit={(content, user_id) =>
-                addComment.mutate({ content, user_id })
-              }
+              onSubmit={(content, user_id) => addComment.mutate({ content, user_id })}
               pending={addComment.isPending}
             />
             <ul className="flex flex-col gap-6">

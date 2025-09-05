@@ -22,8 +22,8 @@ export default function HeroSection() {
           {/* First Column, Second Row - Subtext and Buttons */}
           <div className="mb-8 text-left lg:col-start-1 lg:row-start-2 lg:mb-0">
             <p className="mb-8 text-xl text-gray-600 sm:text-3xl">
-              Discover, create, and share knowledge through engaging video
-              content. Join our community of learners and educators.
+              Discover, create, and share knowledge through engaging video content. Join our community of learners and
+              educators.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <motion.a

@@ -8,6 +8,4 @@ export interface ModalContextType {
   closeModal: () => void;
 }
 
-export const ModalContext = createContext<ModalContextType | undefined>(
-  undefined,
-);
+export const ModalContext = createContext<ModalContextType | undefined>(undefined);

@@ -14,17 +14,9 @@ export default function VideoSection({ videoId, onEdit }: VideoSectionProps) {
   const { data: video, isLoading } = useVideo(videoId);
   return (
     <>
-      {isLoading ? (
-        <VideoPlayerSkeleton />
-      ) : video ? (
-        <VideoPlayer src={video.video_url} />
-      ) : null}
+      {isLoading ? <VideoPlayerSkeleton /> : video ? <VideoPlayer src={video.video_url} /> : null}
 
-      {isLoading ? (
-        <VideoDetailsSkeleton />
-      ) : video ? (
-        <VideoDetails video={video} onEdit={onEdit} />
-      ) : null}
+      {isLoading ? <VideoDetailsSkeleton /> : video ? <VideoDetails video={video} onEdit={onEdit} /> : null}
     </>
   );
 }

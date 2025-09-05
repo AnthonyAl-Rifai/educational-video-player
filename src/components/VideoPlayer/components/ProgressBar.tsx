@@ -9,7 +9,7 @@ function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
 }
 
 interface ProgressBarProps {
-  videoRef?: RefObject<HTMLVideoElement | null>;
+  videoRef: RefObject<HTMLVideoElement | null>;
 }
 
 export default function ProgressBar({ videoRef }: ProgressBarProps) {
@@ -21,7 +21,7 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
 
   // Update current time
   const onTimeUpdate = () => {
-    const v = getVideoEl(videoRef);
+    const v = videoRef.current;
     if (v && !isDragging) {
       setCurrentTime(v.currentTime);
     }
@@ -36,12 +36,8 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
   };
 
   // Use the custom hook to listen to video events
-  usePlayerEvent(videoRef || { current: null }, 'timeupdate', onTimeUpdate);
-  usePlayerEvent(
-    videoRef || { current: null },
-    'loadedmetadata',
-    onLoadedMetadata,
-  );
+  usePlayerEvent(videoRef, 'timeupdate', onTimeUpdate);
+  usePlayerEvent(videoRef, 'loadedmetadata', onLoadedMetadata);
 
   // Calculate progress percentage
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
@@ -119,17 +115,12 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
         onMouseUp={handleMouseUp}
       >
         {/* Progress fill */}
-        <div
-          className="h-full rounded-full bg-white transition-all"
-          style={{ width: `${progressPercentage}%` }}
-        />
+        <div className="h-full rounded-full bg-white transition-all" style={{ width: `${progressPercentage}%` }} />
 
         {/* Progress handle */}
         <div
           className={`absolute top-1/2 h-4 w-4 rounded-full bg-white transition-all ${
-            isHovering || isDragging
-              ? 'scale-100 opacity-100'
-              : 'scale-75 opacity-0'
+            isHovering || isDragging ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
           }`}
           style={{
             left: `${progressPercentage}%`,

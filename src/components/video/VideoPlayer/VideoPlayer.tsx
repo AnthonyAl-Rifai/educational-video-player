@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback } from 'react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
+import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 import { PlaybackState } from '@/types';
 import PlayerOverlay from './components/PlayerOverlay';
 
@@ -37,6 +38,9 @@ export default function VideoPlayer({ src }: { src: string }) {
       v.pause();
     }
   }, []);
+
+  // Enable keyboard controls for this video player, space bar to toggle play, can extend
+  useKeyboardControls({ onTogglePlay: handleTogglePlay });
 
   return (
     <div ref={containerRef} className="relative aspect-video w-full overflow-hidden rounded-lg">

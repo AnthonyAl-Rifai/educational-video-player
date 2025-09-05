@@ -14,11 +14,17 @@ export default function VideoPlayer({ src }: { src: string }) {
   const onPaused = useCallback(() => setPlaybackState('paused'), []);
   const onBuffering = useCallback(() => setPlaybackState('buffering'), []);
   const onCanPlay = useCallback(() => setPlaybackState('ready'), []);
+  const onTimeUpdate = useCallback(() => {
+    if (playbackState !== 'playing') {
+      setPlaybackState('playing');
+    }
+  }, [playbackState]);
 
   usePlayerEvent(videoRef, 'playing', onPlaying);
   usePlayerEvent(videoRef, 'pause', onPaused);
   usePlayerEvent(videoRef, 'waiting', onBuffering);
   usePlayerEvent(videoRef, 'canplay', onCanPlay);
+  usePlayerEvent(videoRef, 'timeupdate', onTimeUpdate, { once: true });
 
   const handleTogglePlay = useCallback(async () => {
     const v = videoRef.current;
@@ -34,7 +40,14 @@ export default function VideoPlayer({ src }: { src: string }) {
 
   return (
     <div ref={containerRef} className="relative aspect-video w-full overflow-hidden rounded-lg">
-      <video ref={videoRef} src={src} playsInline preload="metadata" className="absolute inset-0 h-full w-full" />
+      <video
+        ref={videoRef}
+        src={src}
+        playsInline
+        preload="metadata"
+        autoPlay
+        className="absolute inset-0 h-full w-full"
+      />
       <PlayerOverlay
         state={playbackState}
         onTogglePlay={handleTogglePlay}

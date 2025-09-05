@@ -1,13 +1,12 @@
 'use client';
 
 import { RefObject } from 'react';
+import { PlaybackState } from '@/types';
 import PlayButton from './PlayButton';
 import PauseButton from './PauseButton';
 import VolumeControl from './VolumeControl';
 import PlaybackSpeedMenu from './PlaybackSpeedMenu';
 import FullScreenButton from './FullScreenButton';
-
-type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';
 
 export default function ControlBar({
   state,

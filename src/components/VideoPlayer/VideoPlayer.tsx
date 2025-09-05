@@ -2,9 +2,8 @@
 
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
+import { PlaybackState } from '@/types';
 import PlayerOverlay from './components/PlayerOverlay';
-
-type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';
 
 export default function VideoPlayer({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);

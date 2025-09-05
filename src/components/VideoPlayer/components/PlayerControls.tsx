@@ -2,9 +2,9 @@
 
 import { RefObject } from 'react';
 import { motion } from 'motion/react';
+import { PlaybackState } from '@/types';
 import ProgressBar from './ProgressBar';
 import ControlBar from './ControlBar';
-type PlaybackState = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering';
 
 export default function PlayerControls({
   state,

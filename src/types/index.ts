@@ -9,6 +9,14 @@ export type Video = {
   num_comments: number;
 };
 
+// Video Player Types
+export type PlaybackState =
+  | 'idle'
+  | 'ready'
+  | 'playing'
+  | 'paused'
+  | 'buffering';
+
 export type Comment = {
   id: string;
   video_id: string;

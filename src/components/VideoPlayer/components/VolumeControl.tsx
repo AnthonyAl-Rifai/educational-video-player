@@ -53,18 +53,14 @@ export default function VolumeControl({ videoRef }: VolumeControlProps) {
     [videoRef],
   );
 
-  const handleMouseEnter = useCallback(() => {
-    setIsHovering(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false);
-  }, []);
-
   usePlayerEvent(videoRef, 'volumechange', onVolumeChange);
 
   return (
-    <div className="flex items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div
+      className="flex items-center"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <button
         type="button"
         onClick={handleToggleMute}

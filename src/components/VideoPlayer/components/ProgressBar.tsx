@@ -61,34 +61,20 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
   );
 
   // Mouse events
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      setIsDragging(true);
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    handleSeek(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
       handleSeek(e.clientX);
-    },
-    [handleSeek],
-  );
+    }
+  };
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (isDragging) {
-        handleSeek(e.clientX);
-      }
-    },
-    [isDragging, handleSeek],
-  );
-
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = () => {
     setIsDragging(false);
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    setIsHovering(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false);
-  }, []);
+  };
 
   // Global mouse events for dragging
   useEffect(() => {
@@ -117,8 +103,8 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
       <div
         ref={progressBarRef}
         className="group relative h-2 w-full cursor-pointer rounded-full bg-white/30 transition-all hover:h-2"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

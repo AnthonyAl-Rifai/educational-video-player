@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, RefObject, useCallback } from 'react';
+import { useState, RefObject } from 'react';
 import { motion } from 'motion/react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 
@@ -40,16 +40,8 @@ export default function PlaybackSpeedMenu({ videoRef }: PlaybackSpeedMenuProps) 
     setIsHovered(false); // Close menu after selection
   };
 
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-  }, []);
-
   return (
-    <div className="flex items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className="flex items-center" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       {/* Horizontal speed options - animates from right to left */}
       <motion.div
         initial={{ width: 0, opacity: 0 }}

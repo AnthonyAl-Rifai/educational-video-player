@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useState, RefObject, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PlaybackState } from '@/types';
 import PlayerControls from './PlayerControls';
@@ -9,25 +9,19 @@ import PlayIcon from '@/components/icons/PlayIcon';
 import PauseIcon from '@/components/icons/PauseIcon';
 import { useFullscreen } from '@/hooks/useFullscreen';
 
-export default function PlayerOverlay({
-  state,
-  onTogglePlay,
-  videoRef,
-  containerRef,
-}: {
+interface PlayerOverlayProps {
   state: PlaybackState;
   onTogglePlay: () => void;
   videoRef: RefObject<HTMLVideoElement | null>;
   containerRef: RefObject<HTMLDivElement | null>;
-}) {
-  const [feedbackIcon, setFeedbackIcon] = useState<
-    'play' | 'pause' | undefined
-  >(undefined);
+}
+
+export default function PlayerOverlay({ state, onTogglePlay, videoRef, containerRef }: PlayerOverlayProps) {
+  const [feedbackIcon, setFeedbackIcon] = useState<'play' | 'pause' | undefined>(undefined);
   const [isHovering, setIsHovering] = useState(false);
   const [showControls, setShowControls] = useState(true);
 
-  const { isFullscreen, enterFullscreen, exitFullscreen } =
-    useFullscreen(containerRef);
+  const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen(containerRef);
 
   const handleClick = () => {
     const nextIcon = state === 'playing' ? 'pause' : 'play';
@@ -36,7 +30,7 @@ export default function PlayerOverlay({
   };
 
   const handleDoubleClick = async () => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
 
     if (!isFullscreen) {
       await enterFullscreen();
@@ -44,6 +38,14 @@ export default function PlayerOverlay({
       await exitFullscreen();
     }
   };
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+  }, []);
 
   useEffect(() => {
     if (!feedbackIcon) return;
@@ -68,14 +70,10 @@ export default function PlayerOverlay({
   return (
     <div
       className="pointer-events-none absolute inset-0 z-10"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <div
-        onClick={handleClick}
-        onDoubleClick={handleDoubleClick}
-        className="pointer-events-auto absolute inset-0"
-      >
+      <div onClick={handleClick} onDoubleClick={handleDoubleClick} className="pointer-events-auto absolute inset-0">
         <AnimatePresence>
           {feedbackIcon && (
             <motion.div
@@ -86,11 +84,7 @@ export default function PlayerOverlay({
               transition={{ duration: 0.5, ease: 'easeOut' }}
               className="absolute top-1/2 left-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white"
             >
-              {feedbackIcon === 'play' ? (
-                <PlayIcon size={36} />
-              ) : (
-                <PauseIcon size={32} />
-              )}
+              {feedbackIcon === 'play' ? <PlayIcon size={36} /> : <PauseIcon size={32} />}
             </motion.div>
           )}
         </AnimatePresence>

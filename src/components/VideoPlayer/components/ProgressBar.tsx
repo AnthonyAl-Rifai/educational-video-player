@@ -3,11 +3,6 @@
 import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 import { formatTime } from '@/lib/video';
-
-function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
-  return ref?.current ?? null;
-}
-
 interface ProgressBarProps {
   videoRef: RefObject<HTMLVideoElement | null>;
 }
@@ -29,7 +24,7 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
 
   // Update duration when metadata loads
   const onLoadedMetadata = () => {
-    const v = getVideoEl(videoRef);
+    const v = videoRef.current;
     if (v) {
       setDuration(v.duration);
     }
@@ -45,7 +40,7 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
   // Handle seeking
   const handleSeek = useCallback(
     (clientX: number) => {
-      const v = getVideoEl(videoRef);
+      const v = videoRef.current;
       const bar = progressBarRef.current;
       if (!bar || !v) return;
 
@@ -66,20 +61,34 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
   );
 
   // Mouse events
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    handleSeek(e.clientX);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      setIsDragging(true);
       handleSeek(e.clientX);
-    }
-  };
+    },
+    [handleSeek],
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isDragging) {
+        handleSeek(e.clientX);
+      }
+    },
+    [isDragging, handleSeek],
+  );
+
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+  }, []);
 
   // Global mouse events for dragging
   useEffect(() => {
@@ -108,8 +117,8 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
       <div
         ref={progressBarRef}
         className="group relative h-2 w-full cursor-pointer rounded-full bg-white/30 transition-all hover:h-2"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

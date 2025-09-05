@@ -6,25 +6,24 @@ import VolumeLowIcon from '@/components/icons/VolumeLowIcon';
 import VolumeHighIcon from '@/components/icons/VolumeHighIcon';
 import { motion } from 'motion/react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
-
-function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
-  return ref?.current ?? null;
+interface VolumeControlProps {
+  videoRef: RefObject<HTMLVideoElement | null>;
 }
 
-export default function VolumeControl({ videoRef }: { videoRef?: RefObject<HTMLVideoElement | null> }) {
+export default function VolumeControl({ videoRef }: VolumeControlProps) {
   const [volume, setVolume] = useState(1); // 0 to 1
   const [isMuted, setIsMuted] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
   const onVolumeChange = useCallback(() => {
-    const v = getVideoEl(videoRef);
+    const v = videoRef.current;
     if (!v) return;
     setVolume(v.volume);
     setIsMuted(v.muted);
   }, [videoRef]);
 
   const handleToggleMute = useCallback(() => {
-    const v = getVideoEl(videoRef);
+    const v = videoRef.current;
     if (!v) return;
 
     if (v.muted) {
@@ -41,7 +40,7 @@ export default function VolumeControl({ videoRef }: { videoRef?: RefObject<HTMLV
 
   const handleSetVolume = useCallback(
     (value: number) => {
-      const v = getVideoEl(videoRef);
+      const v = videoRef.current;
       if (!v) return;
       const clamped = Math.min(1, Math.max(0, value));
       v.volume = clamped;
@@ -54,14 +53,18 @@ export default function VolumeControl({ videoRef }: { videoRef?: RefObject<HTMLV
     [videoRef],
   );
 
-  usePlayerEvent(videoRef || { current: null }, 'volumechange', onVolumeChange);
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+  }, []);
+
+  usePlayerEvent(videoRef, 'volumechange', onVolumeChange);
 
   return (
-    <div
-      className="flex items-center"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
+    <div className="flex items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <button
         type="button"
         onClick={handleToggleMute}

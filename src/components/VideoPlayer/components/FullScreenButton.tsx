@@ -5,7 +5,11 @@ import FullscreenIcon from '@/components/icons/FullscreenIcon';
 import FullscreenExitIcon from '@/components/icons/FullscreenExitIcon';
 import { useFullscreen } from '@/hooks/useFullscreen';
 
-export default function FullScreenButton({ containerRef }: { containerRef?: RefObject<HTMLDivElement | null> }) {
+interface FullscreenButtonProps {
+  containerRef?: RefObject<HTMLDivElement | null>;
+}
+
+export default function FullscreenButton({ containerRef }: FullscreenButtonProps) {
   const { isFullscreen, toggleFullscreen } = useFullscreen(containerRef);
 
   return (

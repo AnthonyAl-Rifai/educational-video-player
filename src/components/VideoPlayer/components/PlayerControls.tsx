@@ -6,19 +6,21 @@ import { PlaybackState } from '@/types';
 import ProgressBar from './ProgressBar';
 import ControlBar from './ControlBar';
 
+interface PlayerControlsProps {
+  state: PlaybackState;
+  onTogglePlay: () => void;
+  videoRef: RefObject<HTMLVideoElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
+  showControls: boolean;
+}
+
 export default function PlayerControls({
   state,
   onTogglePlay,
   videoRef,
   containerRef,
   showControls,
-}: {
-  state: PlaybackState;
-  onTogglePlay: () => void;
-  videoRef: RefObject<HTMLVideoElement | null>;
-  containerRef?: RefObject<HTMLDivElement | null>;
-  showControls: boolean;
-}) {
+}: PlayerControlsProps) {
   // Show controls if not playing OR if showControls is true
   const shouldShowControls = state !== 'playing' || showControls;
 

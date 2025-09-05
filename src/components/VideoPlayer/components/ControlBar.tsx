@@ -6,19 +6,16 @@ import PlayButton from './PlayButton';
 import PauseButton from './PauseButton';
 import VolumeControl from './VolumeControl';
 import PlaybackSpeedMenu from './PlaybackSpeedMenu';
-import FullScreenButton from './FullScreenButton';
+import FullscreenButton from './FullscreenButton';
 
-export default function ControlBar({
-  state,
-  onTogglePlay,
-  videoRef,
-  containerRef,
-}: {
+interface ControlBarProps {
   state: PlaybackState;
   onTogglePlay: () => void;
-  videoRef?: RefObject<HTMLVideoElement | null>;
-  containerRef?: RefObject<HTMLDivElement | null>;
-}) {
+  videoRef: RefObject<HTMLVideoElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
+}
+
+export default function ControlBar({ state, onTogglePlay, videoRef, containerRef }: ControlBarProps) {
   const isPlaying = state === 'playing';
   const isDisabled = state === 'idle' || state === 'buffering';
 
@@ -37,7 +34,7 @@ export default function ControlBar({
       {/* Right section */}
       <div className="flex items-center space-x-4">
         <PlaybackSpeedMenu videoRef={videoRef} />
-        <FullScreenButton containerRef={containerRef} />
+        <FullscreenButton containerRef={containerRef} />
       </div>
     </div>
   );

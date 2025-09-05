@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 import { PlaybackState } from '@/types';
 import PlayerOverlay from './components/PlayerOverlay';
@@ -20,19 +20,13 @@ export default function VideoPlayer({ src }: { src: string }) {
   usePlayerEvent(videoRef, 'waiting', onBuffering);
   usePlayerEvent(videoRef, 'canplay', onCanPlay);
 
-  useEffect(() => {
-    console.log('PlaybackState changed to:', playbackState);
-  }, [playbackState]);
-
   const handleTogglePlay = useCallback(async () => {
     const v = videoRef.current;
     if (!v) return;
     if (v.paused) {
       try {
         await v.play();
-      } catch {
-        // ignore or surface a tooltip/snackbar if desired
-      }
+      } catch {}
     } else {
       v.pause();
     }

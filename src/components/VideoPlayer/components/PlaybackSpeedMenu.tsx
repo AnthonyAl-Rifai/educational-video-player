@@ -1,51 +1,55 @@
 'use client';
 
-import { useState, RefObject } from 'react';
+import { useState, RefObject, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 
-const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
-
-function getVideoEl(ref?: RefObject<HTMLVideoElement | null>) {
-  return ref?.current ?? null;
+interface PlaybackSpeedMenuProps {
+  videoRef: RefObject<HTMLVideoElement | null>;
 }
 
-export default function PlaybackSpeedMenu({
-  videoRef,
-}: {
-  videoRef?: RefObject<HTMLVideoElement | null>;
-}) {
+const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+
+export default function PlaybackSpeedMenu({ videoRef }: PlaybackSpeedMenuProps) {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
 
   const onRateChange = () => {
-    const video = getVideoEl(videoRef);
+    const video = videoRef.current;
     if (video) setPlaybackRate(video.playbackRate);
   };
 
-  usePlayerEvent(videoRef || { current: null }, 'ratechange', onRateChange);
+  usePlayerEvent(videoRef, 'ratechange', onRateChange);
 
   const handleCyclePlaybackRate = () => {
     const currentIndex = SPEED_OPTIONS.indexOf(playbackRate);
     const nextIndex = (currentIndex + 1) % SPEED_OPTIONS.length;
     const nextRate = SPEED_OPTIONS[nextIndex];
 
-    const video = getVideoEl(videoRef);
+    const video = videoRef.current;
     if (!video) return;
     video.playbackRate = nextRate;
     setPlaybackRate(nextRate);
   };
 
   const handleSetRate = (rate: number) => {
-    const video = getVideoEl(videoRef);
+    const video = videoRef.current;
     if (!video) return;
     video.playbackRate = rate;
     setPlaybackRate(rate);
     setIsHovered(false); // Close menu after selection
   };
 
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
   return (
-    <div className="flex items-center" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div className="flex items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {/* Horizontal speed options - animates from right to left */}
       <motion.div
         initial={{ width: 0, opacity: 0 }}
@@ -62,9 +66,7 @@ export default function PlaybackSpeedMenu({
               key={rate}
               onClick={() => handleSetRate(rate)}
               className={`text-md flex w-12 cursor-pointer items-center justify-center rounded px-2 py-1 text-center whitespace-nowrap transition-colors ${
-                playbackRate === rate
-                  ? 'bg-white font-bold text-black'
-                  : 'bg-black/60 text-white hover:bg-white/20'
+                playbackRate === rate ? 'bg-white font-bold text-black' : 'bg-black/60 text-white hover:bg-white/20'
               }`}
             >
               {rate}x

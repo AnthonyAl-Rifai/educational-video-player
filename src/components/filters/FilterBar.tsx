@@ -24,7 +24,7 @@ export default function FilterBar({ sortBy, onSortChange, isLoading = false }: F
             className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
               sortBy === 'date' ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'
             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-            whileHover={!isLoading ? { scale: 1.02 } : {}}
+            whileHover={!isLoading ? { scale: 1.04 } : {}}
             whileTap={!isLoading ? { scale: 0.98 } : {}}
           >
             {sortBy === 'date' && (
@@ -49,7 +49,7 @@ export default function FilterBar({ sortBy, onSortChange, isLoading = false }: F
             className={`relative cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
               sortBy === 'comments' ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'
             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-            whileHover={!isLoading ? { scale: 1.02 } : {}}
+            whileHover={!isLoading ? { scale: 1.04 } : {}}
             whileTap={!isLoading ? { scale: 0.98 } : {}}
           >
             {sortBy === 'comments' && (

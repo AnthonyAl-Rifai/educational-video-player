@@ -54,13 +54,20 @@ export default function ExpandableText({ text, collapsedHeightPx = 48 }: Props) 
       )}
 
       {showToggle && (
-        <button
+        <motion.button
           type="button"
           onClick={toggle}
-          className="mt-2 cursor-pointer text-sm text-blue-600 transition-colors hover:text-blue-700"
+          className="mt-2 cursor-pointer text-blue-600 transition-colors hover:text-blue-700"
+          whileHover={{ y: -1 }}
+          whileTap={{ y: 0 }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 25,
+          }}
         >
           {isExpanded ? '...hide' : '...show'}
-        </button>
+        </motion.button>
       )}
     </div>
   );

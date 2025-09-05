@@ -11,22 +11,76 @@ export default function VideoCreateModal() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
+  const [urlError, setUrlError] = useState('');
   const create = useCreateVideo(USER_ID);
   const { refetch: refetchVideos } = useVideos(USER_ID);
   const router = useRouter();
   const { isModalOpen, closeModal } = useModal();
+
+  // URL validation functions
+  const isValidUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const isValidVideoUrl = (url: string): boolean => {
+    if (!isValidUrl(url)) return false;
+
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
+    const urlLower = url.toLowerCase();
+
+    // Check if URL ends with a video extension
+    return videoExtensions.some((ext) => urlLower.includes(ext));
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(e.target.value);
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setVideoUrl(value);
+
+    if (value.trim() === '') {
+      setUrlError('');
+    } else if (!value.startsWith('http://') && !value.startsWith('https://')) {
+      setUrlError('URL must start with http:// or https:// (e.g., https://example.com/video.mp4)');
+    } else if (!isValidUrl(value)) {
+      setUrlError('Please enter a valid URL (e.g., https://example.com/video.mp4)');
+    } else if (!isValidVideoUrl(value)) {
+      setUrlError('Please enter a URL to a video file (MP4, WebM, OGG, MOV, AVI, MKV)');
+    } else {
+      setUrlError('');
+    }
+  };
 
   const handleClose = useCallback(() => {
     if (!create.isPending) {
       setTitle('');
       setDescription('');
       setVideoUrl('');
+      setUrlError('');
       closeModal();
     }
   }, [create.isPending, closeModal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate URL before submission
+    if (videoUrl.trim() && !isValidVideoUrl(videoUrl)) {
+      setUrlError('Please enter a valid video URL');
+      return;
+    }
+
     create.mutate(
       { user_id: USER_ID, title, description, video_url: videoUrl },
       {
@@ -120,7 +174,7 @@ export default function VideoCreateModal() {
                       className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter video title"
                       value={title}
-                      onChange={(e) => setTitle(e.target.value)}
+                      onChange={handleTitleChange}
                       required
                       disabled={create.isPending}
                     />
@@ -136,7 +190,7 @@ export default function VideoCreateModal() {
                       className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter video description"
                       value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={handleDescriptionChange}
                       required
                       disabled={create.isPending}
                       data-lenis-prevent
@@ -150,14 +204,22 @@ export default function VideoCreateModal() {
                     <input
                       id="videoUrl"
                       type="url"
-                      className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500"
+                      className={`w-full rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:ring-2 ${
+                        urlError ? 'border-red-300 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                      }`}
                       placeholder="https://example.com/video.mp4"
                       value={videoUrl}
-                      onChange={(e) => setVideoUrl(e.target.value)}
+                      onChange={handleUrlChange}
                       required
                       disabled={create.isPending}
                     />
-                    <p className="mt-1 text-sm text-gray-500">Enter a direct link to an MP4 video file</p>
+                    {urlError ? (
+                      <p className="mt-1 text-sm text-red-600">{urlError}</p>
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-500">
+                        Enter a direct link to a video file (MP4, WebM, OGG, MOV, AVI, MKV)
+                      </p>
+                    )}
                   </div>
 
                   {/* Error message */}
@@ -169,27 +231,51 @@ export default function VideoCreateModal() {
 
                   {/* Actions */}
                   <div className="flex items-center justify-end gap-3 pt-4">
-                    <button
+                    <motion.button
                       type="button"
                       onClick={handleClose}
                       disabled={create.isPending}
                       className={`rounded-lg bg-gray-100 px-6 py-3 text-gray-700 transition-colors disabled:opacity-50 ${
                         create.isPending ? '' : 'cursor-pointer hover:bg-gray-200'
                       }`}
+                      whileHover={!create.isPending ? { scale: 1.02 } : {}}
+                      whileTap={!create.isPending ? { scale: 0.98 } : {}}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       type="submit"
-                      disabled={create.isPending || !title.trim() || !description.trim() || !videoUrl.trim()}
+                      disabled={
+                        create.isPending || !title.trim() || !description.trim() || !videoUrl.trim() || !!urlError
+                      }
                       className={`rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors disabled:opacity-50 ${
-                        create.isPending || !title.trim() || !description.trim() || !videoUrl.trim()
+                        create.isPending || !title.trim() || !description.trim() || !videoUrl.trim() || !!urlError
                           ? ''
                           : 'cursor-pointer hover:bg-blue-700'
                       }`}
+                      whileHover={
+                        !create.isPending && title.trim() && description.trim() && videoUrl.trim() && !urlError
+                          ? { scale: 1.02 }
+                          : {}
+                      }
+                      whileTap={
+                        !create.isPending && title.trim() && description.trim() && videoUrl.trim() && !urlError
+                          ? { scale: 0.98 }
+                          : {}
+                      }
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                     >
                       {create.isPending ? 'Creating...' : 'Create Video'}
-                    </button>
+                    </motion.button>
                   </div>
                 </form>
               </motion.div>

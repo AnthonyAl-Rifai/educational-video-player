@@ -158,17 +158,24 @@ export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModa
 
                   {/* Actions */}
                   <div className="flex items-center justify-end gap-3 pt-4">
-                    <button
+                    <motion.button
                       type="button"
                       onClick={handleClose}
                       disabled={edit.isPending}
                       className={`rounded-lg bg-gray-100 px-6 py-3 text-gray-700 transition-colors disabled:opacity-50 ${
                         edit.isPending ? '' : 'cursor-pointer hover:bg-gray-200'
                       }`}
+                      whileHover={!edit.isPending ? { scale: 1.02 } : {}}
+                      whileTap={!edit.isPending ? { scale: 0.98 } : {}}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       type="submit"
                       disabled={
                         edit.isPending ||
@@ -184,9 +191,30 @@ export default function VideoEditModal({ isOpen, onClose, video }: VideoEditModa
                           ? ''
                           : 'cursor-pointer hover:bg-blue-700'
                       }`}
+                      whileHover={
+                        !edit.isPending &&
+                        title.trim() &&
+                        description.trim() &&
+                        !(video && title === video.title && description === video.description)
+                          ? { scale: 1.02 }
+                          : {}
+                      }
+                      whileTap={
+                        !edit.isPending &&
+                        title.trim() &&
+                        description.trim() &&
+                        !(video && title === video.title && description === video.description)
+                          ? { scale: 0.98 }
+                          : {}
+                      }
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                     >
                       {edit.isPending ? 'Updating...' : 'Update Video'}
-                    </button>
+                    </motion.button>
                   </div>
                 </form>
               </motion.div>

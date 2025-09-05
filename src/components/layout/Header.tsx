@@ -29,23 +29,43 @@ export default function Header() {
         <div className="flex h-20 items-center justify-between">
           {/* Left: brand */}
           <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="flex items-center text-4xl font-bold text-gray-900 transition-colors hover:text-blue-600"
-              aria-label="Go to homepage"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{
+                type: 'spring',
+                stiffness: 400,
+                damping: 17,
+              }}
             >
-              <span>Edeo</span>
-            </Link>
+              <Link
+                href="/"
+                className="flex items-center text-4xl font-bold text-gray-900 transition-colors hover:text-blue-600"
+                aria-label="Go to homepage"
+              >
+                <span>Edeo</span>
+              </Link>
+            </motion.div>
           </div>
 
           {/* Navigation - visible on all screens */}
           <div className="flex items-center gap-6" aria-label="Primary navigation">
-            <Link
-              href="/videos"
-              className="px-3 py-2 text-xl font-bold text-gray-700 transition-colors hover:text-blue-600"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{
+                type: 'spring',
+                stiffness: 400,
+                damping: 17,
+              }}
             >
-              Videos
-            </Link>
+              <Link
+                href="/videos"
+                className="px-3 py-2 text-xl font-bold text-gray-700 transition-colors hover:text-blue-600"
+              >
+                Videos
+              </Link>
+            </motion.div>
             <motion.button
               type="button"
               onClick={openModal}

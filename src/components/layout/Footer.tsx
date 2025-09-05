@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { motion } from 'motion/react';
 
 export default function Footer() {
   return (
@@ -9,12 +10,23 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link
-              href="/"
-              className="flex items-center text-2xl font-bold text-gray-900 transition-colors hover:text-blue-600"
+            <motion.div
+              className="inline-block"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
             >
-              Edeo
-            </Link>
+              <Link
+                href="/"
+                className="flex items-center text-2xl font-bold text-gray-900 transition-colors hover:text-blue-600"
+              >
+                Edeo
+              </Link>
+            </motion.div>
             <p className="mt-4 max-w-md text-gray-600">
               An educational video platform designed to make learning engaging and accessible for everyone.
             </p>
@@ -25,14 +37,36 @@ export default function Footer() {
             <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">Navigation</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-gray-600 transition-colors hover:text-blue-600">
-                  Home
-                </Link>
+                <motion.div
+                  className="inline-block"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                >
+                  <Link href="/" className="text-gray-600 transition-colors hover:text-blue-600">
+                    Home
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link href="/videos" className="text-gray-600 transition-colors hover:text-blue-600">
-                  Videos
-                </Link>
+                <motion.div
+                  className="inline-block"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                >
+                  <Link href="/videos" className="text-gray-600 transition-colors hover:text-blue-600">
+                    Videos
+                  </Link>
+                </motion.div>
               </li>
             </ul>
           </div>

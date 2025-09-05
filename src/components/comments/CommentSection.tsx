@@ -1,22 +1,21 @@
 import { LayoutGroup } from 'motion/react';
-import { useComments, useCreateComment, useVideo } from '@/lib/queries';
+import { useComments, useCreateComment } from '@/lib/queries';
 import CommentForm from './CommentForm';
 import VideoComment from './VideoComment';
 import VideoCommentSkeleton from './VideoCommentSkeleton';
+import ErrorState from '@/components/ui/ErrorState';
 
 interface CommentSectionProps {
   videoId: string;
 }
 
 export default function CommentSection({ videoId }: CommentSectionProps) {
-  const { data: video, isLoading: videoLoading } = useVideo(videoId);
-  const { data: comments, isLoading: commentsLoading } = useComments(videoId);
+  const { data: comments, isLoading: commentsLoading, error: commentsError } = useComments(videoId);
   const addComment = useCreateComment(videoId);
 
-  const isLoading = videoLoading || commentsLoading;
   return (
     <section className="flex flex-col gap-6">
-      {isLoading ? (
+      {commentsLoading ? (
         <>
           <div className="h-6 w-32 animate-pulse rounded bg-gray-200" />
           <div className="space-y-4">
@@ -28,7 +27,14 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
             </div>
           </div>
         </>
-      ) : video ? (
+      ) : commentsError ? (
+        <ErrorState
+          title="Unable to load comments"
+          message="We're having trouble loading the comments for this video. Please try again."
+          onRetry={() => window.location.reload()}
+          variant="inline"
+        />
+      ) : (
         <>
           <h2 className="text-lg font-semibold">
             {comments?.length || 0} {(comments?.length || 0) === 1 ? 'Comment' : 'Comments'}
@@ -46,7 +52,7 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
             </ul>
           </LayoutGroup>
         </>
-      ) : null}
+      )}
     </section>
   );
 }

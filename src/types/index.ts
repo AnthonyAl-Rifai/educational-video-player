@@ -9,14 +9,6 @@ export type Video = {
   num_comments: number;
 };
 
-// Video Player Types
-export type PlaybackState =
-  | 'idle'
-  | 'ready'
-  | 'playing'
-  | 'paused'
-  | 'buffering';
-
 export type Comment = {
   id: string;
   video_id: string;
@@ -53,3 +45,11 @@ export type ListCommentsResponse = { comments: Comment[] };
 export type CreateVideoResponse = { success: string }; // server returns success message
 export type CreateCommentResponse = { success: string };
 export type EditVideoResponse = { success: string };
+
+// Video Player Types
+export type PlaybackState =
+  | 'idle'
+  | 'ready'
+  | 'playing'
+  | 'paused'
+  | 'buffering';

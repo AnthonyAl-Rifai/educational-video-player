@@ -49,15 +49,18 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
   const handleSeek = useCallback(
     (clientX: number) => {
       const v = getVideoEl(videoRef);
-      if (!progressBarRef.current || !v) return;
+      const bar = progressBarRef.current;
+      if (!bar || !v) return;
 
-      const rect = progressBarRef.current.getBoundingClientRect();
-      const clickPosition = clientX - rect.left;
-      const percentage = Math.max(
-        0,
-        Math.min(100, (clickPosition / rect.width) * 100),
-      );
-      const newTime = (percentage / 100) * duration;
+      // Get the bounding box of the progress bar to translate click position into a fraction
+      const rect = bar.getBoundingClientRect();
+      const offsetX = clientX - rect.left;
+      const fraction = offsetX / rect.width;
+
+      // clamp between 0 and 1
+      const clamped = Math.max(0, Math.min(1, fraction));
+
+      const newTime = clamped * duration;
 
       v.currentTime = newTime;
       setCurrentTime(newTime);

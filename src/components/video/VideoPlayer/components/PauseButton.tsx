@@ -1,6 +1,6 @@
 'use client';
 
-import PauseIcon from '@/components/icons/PauseIcon';
+import PauseIcon from '@/components/ui/icons/PauseIcon';
 
 interface PauseButtonProps {
   onClick: () => void;

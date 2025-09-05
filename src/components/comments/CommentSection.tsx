@@ -1,8 +1,8 @@
 import { LayoutGroup } from 'motion/react';
 import { useComments, useCreateComment, useVideo } from '@/lib/queries';
-import CommentForm from '@/components/CommentForm';
-import VideoComment from '@/components/VideoComment';
-import VideoCommentSkeleton from '@/components/VideoCommentSkeleton';
+import CommentForm from './CommentForm';
+import VideoComment from './VideoComment';
+import VideoCommentSkeleton from './VideoCommentSkeleton';
 
 interface CommentSectionProps {
   videoId: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import PlayIcon from '@/components/icons/PlayIcon';
+import PlayIcon from '@/components/ui/icons/PlayIcon';
 
 interface PlayButtonProps {
   onClick: () => void;

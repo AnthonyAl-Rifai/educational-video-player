@@ -1,9 +1,9 @@
 'use client';
 
 import { RefObject, useCallback, useState } from 'react';
-import VolumeMuteIcon from '@/components/icons/VolumeMuteIcon';
-import VolumeLowIcon from '@/components/icons/VolumeLowIcon';
-import VolumeHighIcon from '@/components/icons/VolumeHighIcon';
+import VolumeMuteIcon from '@/components/ui/icons/VolumeMuteIcon';
+import VolumeLowIcon from '@/components/ui/icons/VolumeLowIcon';
+import VolumeHighIcon from '@/components/ui/icons/VolumeHighIcon';
 import { motion } from 'motion/react';
 import { usePlayerEvent } from '@/hooks/usePlayerEvent';
 interface VolumeControlProps {

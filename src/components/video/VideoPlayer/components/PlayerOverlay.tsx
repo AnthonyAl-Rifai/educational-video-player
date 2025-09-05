@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PlaybackState } from '@/types';
 import PlayerControls from './PlayerControls';
 import LoadingSpinner from './LoadingSpinner';
-import PlayIcon from '@/components/icons/PlayIcon';
-import PauseIcon from '@/components/icons/PauseIcon';
+import PlayIcon from '@/components/ui/icons/PlayIcon';
+import PauseIcon from '@/components/ui/icons/PauseIcon';
 import { useFullscreen } from '@/hooks/useFullscreen';
 
 interface PlayerOverlayProps {

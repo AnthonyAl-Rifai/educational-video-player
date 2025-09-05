@@ -3,10 +3,10 @@
 import { useState, useMemo } from 'react';
 import { useVideos } from '@/lib/queries';
 import { USER_ID } from '@/lib/config';
-import VideoCard from '@/components/VideoCard';
+import VideoCard from '@/components/video/VideoCard';
+import VideoCardSkeleton from '@/components/video/VideoCardSkeleton';
 import { useModal } from '@/hooks/useModal';
-import VideoCardSkeleton from '@/components/VideoCardSkeleton';
-import FilterBar from '@/components/FilterBar';
+import FilterBar from '@/components/filters/FilterBar';
 
 type SortOption = 'date' | 'comments';
 

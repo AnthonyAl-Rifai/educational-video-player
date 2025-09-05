@@ -1,8 +1,8 @@
 import './globals.css';
 import Providers from '@/providers';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import VideoCreateModal from '@/components/VideoCreateModal';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import VideoCreateModal from '@/components/modals/VideoCreateModal';
 
 export const metadata = {
   title: 'Edeo - Educational Video Platform',

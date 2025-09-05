@@ -2,11 +2,11 @@
 
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import VideoSection from '@/components/VideoSection';
-import CommentSection from '@/components/CommentSection';
-import VideoEditModal from '@/components/VideoEditModal';
-import VideoSidebar from '@/components/VideoSidebar';
-import VideoGrid from '@/components/VideoGrid';
+import VideoSection from '@/components/video/VideoSection';
+import VideoSidebar from '@/components/video/VideoSidebar';
+import VideoGrid from '@/components/video/VideoGrid';
+import CommentSection from '@/components/comments/CommentSection';
+import VideoEditModal from '@/components/modals/VideoEditModal';
 import type { Video } from '@/types';
 
 export default function VideoDetailPage() {

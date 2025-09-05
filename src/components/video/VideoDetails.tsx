@@ -1,5 +1,5 @@
-import VideoDropdownMenu from '@/components/VideoDropdownMenu';
-import ExpandableText from '@/components/ExpandableText';
+import VideoDropdownMenu from './VideoDropdownMenu';
+import ExpandableText from '@/components/ui/ExpandableText';
 import type { Video } from '@/types';
 
 interface VideoDetailsProps {

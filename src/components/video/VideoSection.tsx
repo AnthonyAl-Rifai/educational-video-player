@@ -1,8 +1,8 @@
 import { useVideo } from '@/lib/queries';
-import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
-import VideoPlayerSkeleton from '@/components/VideoPlayerSkeleton';
-import VideoDetails from '@/components/VideoDetails';
-import VideoDetailsSkeleton from '@/components/VideoDetailsSkeleton';
+import VideoPlayer from './VideoPlayer/VideoPlayer';
+import VideoPlayerSkeleton from './VideoPlayerSkeleton';
+import VideoDetails from './VideoDetails';
+import VideoDetailsSkeleton from './VideoDetailsSkeleton';
 import type { Video } from '@/types';
 
 interface VideoSectionProps {

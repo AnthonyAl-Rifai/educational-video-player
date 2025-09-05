@@ -1,8 +1,8 @@
 'use client';
 
 import { RefObject } from 'react';
-import FullscreenIcon from '@/components/icons/FullscreenIcon';
-import FullscreenExitIcon from '@/components/icons/FullscreenExitIcon';
+import FullscreenIcon from '@/components/ui/icons/FullscreenIcon';
+import FullscreenExitIcon from '@/components/ui/icons/FullscreenExitIcon';
 import { useFullscreen } from '@/hooks/useFullscreen';
 
 interface FullscreenButtonProps {
